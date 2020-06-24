@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\RequestAPIController as ForRequest;
+
 
 class HomeController extends Controller
 {
@@ -25,7 +29,18 @@ class HomeController extends Controller
     public function index()
     {
         $towns = ['Красноярск' => '100510397251', 'New York' => '100510629862', 'Detroit' => '100532706033'];
+//        $user = DB::table('api_auth')
+//            ->where('email', '=', Auth::user()->email)
+//            ->first();
+//        dump($user);
+        $model = new ForRequest(1);
+        dump($model);
         return view('home', ['towns' => $towns]);
+    }
+
+    public function spa()
+    {
+        return view('spa');
     }
 
     public function json(Request $request)

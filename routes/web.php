@@ -25,3 +25,5 @@ Route::get('/', function () {
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::match(['get', 'post'], '/json', 'HomeController@json');
+
+//Route::get('/{any}', 'HomeController@spa')->where('any', '.*');
