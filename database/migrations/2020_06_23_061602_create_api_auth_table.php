@@ -16,9 +16,9 @@ class CreateApiAuthTable extends Migration
         Schema::create('api_auth', function (Blueprint $table) {
             $table->string('username', 255)->unique();
             $table->string('password');
-            $table->longText('a1')->nullable();
-            $table->longText('z1')->nullable();
-            $table->longText('l')->nullable();
+            $table->longText('A1')->nullable();
+            $table->longText('Z1')->nullable();
+            $table->longText('L')->nullable();
             $table->string('email')->nullable();
 
             $table->foreign('email')
