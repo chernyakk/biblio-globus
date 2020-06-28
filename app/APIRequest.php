@@ -13,17 +13,17 @@ use GuzzleHttp\Psr7\Request;
 
 class APIRequest extends Model
 {
-    private array $query /** @var array must ba an array and have a next structure*/;
-    private CookieJar $cookie;
-    private Client $client;
+    public string $query/** @var string must be an array and have a next structure*/;
+    public CookieJar $cookie;
+    public Client $client;
 
     /**
      * @param $option
      * @return string
      */
-    public function getQuery($option): string
+    public function getQuery(): string
     {
-        return $this->query[$option];
+        return $this->query;
     }
 
     public function getClient(): Client
@@ -36,16 +36,25 @@ class APIRequest extends Model
         return $this->cookie;
     }
 
+    /**
+     * setQuery is a method, which make HTTP query from array
+     * array construction must include:
+     * ssl = boolean, usually false;
+     * subdomain = in this project ordinary "export";
+     * domain = in this project "bgoperator.ru";
+     * subdirectory = "yandex"
+     */
+
     public function setQuery (array $data)
     {
         $url = $data['ssl'] ? 'https://' : 'http://';
         $url .= $data['subdomain'] . '.' . $data['domain'] . '/' . $data['subdirectory'] . '?';
         $url .= http_build_query($data['values']);
-        $this->query[$data['subdomain']] = $url;
-        return $this->getQuery($data['subdomain']);
+        $this->query = $url;
+        return $this->getQuery();
     }
 
-    private function setClient()
+    public function setClient()
     {
         $this->client = new Client(['cookies' => true]);
         return $this->getClient();
@@ -53,38 +62,27 @@ class APIRequest extends Model
 
     public function setCookie(CookieJar $cookie = null)
     {
-        $this->cookie = $cookie ? $cookie : new CookieJar();
+        ($this->cookie == $cookie) ? $this->$cookie = $cookie : new CookieJar();
     }
-
-//    public function __construct () {
-//        $this->now = Auth::user();
 //        $this->apiQueryDomain = 'http://export.' . $this->domain . '/';
-//        $this->authQueryDomain = 'https://login.' . $this->domain . '/auth?';
-//        $this->cookie = DB::table('api_auth')
-//            ->where('email', '=', $this->now->email)
-//            ->select('a1', 'z1', 'l')
-//            ->get();
-//    }
 
-    public function APIRequestBuilder(array $query, string $option, $headers = null) {
+    public function APIRequestBuilder(array $query = null, $headers = []) {
+        $this->client = new Client(['cookies' => true]);
+        $this->query = $this->setQuery($query);
+        $this->cookie = $this->getAuth();
         $options = [
             'headers' => array_merge(['Accept-Encoding' => 'gzip'], $headers),
-            'cookies' => $this->cookie
-                ? $this->getCookie()
-                : $this->getAuth(),
+            'cookies' => $this->getCookie(),
         ];
-        $uri[$option] = array_key_exists($option, $this->query)
-            ? $this->getQuery($option)
-            : $this->setQuery($query);
-        !$this->getClient() ? $this->setClient() : true;
-        $request = new Request('post', $uri[$option]);
-        $this->APIRequestSender($request, $options, $uri[$option]);
+        if ($this)
+        $request = new Request('post', $query);
+        $this->APIRequestSender($request, $options);
     }
 
-    protected function APIRequestSender(Request $request, array $options, string $uri) {
+    public function APIRequestSender(Request $request, array $options) {
         try {
             $response = $this->client->send($request, $options);
-            $this->getValueFromHeader($response->getHeaders());
+
         } catch (RequestException $e) {
             $this->APIExceptionHandler($e);
             $this->counter += 1;
@@ -92,7 +90,7 @@ class APIRequest extends Model
         return $this->APIResponseHandler($response);
     }
 
-    protected function APIExceptionHandler($code) {
+    public function APIExceptionHandler($code) {
         $status = $code->getResponse()->getStatusCode();
         switch ($status) {
             case 401:
@@ -113,66 +111,44 @@ class APIRequest extends Model
         }
     }
 
-    protected function getAuth() {
+    public function getAuth() {
         $auth = DB::table('api_auth')
-            ->where('email', '=', Auth::user()->mail)
-            ->select('login', 'password')
+            ->where('email', '=', 'admin@admin.ru')
+            ->select('username', 'password')
             ->get();
-        $auth = $auth->toArray();
-        $auth['pwd'] = $auth['password'];
-        unset($auth['password']);
-        $this->APIRequestBuilder($auth, 'null', 'login');
+        //dump($auth[0]);
+        $auth->flatten();
+        dump($auth);
+        dump($auth->password);
+        dump($auth->username);
+        $auth[0]->pwd = $auth['password'];
+        //unset($auth['password']);
+        $auth[0]->login = $auth['username'];
+        //unset($auth['username']);
+
+        $uri = 'https://login.bgoperator.ru/auth?' . http_build_query($auth);
+        $request = new Request('post', $uri);
+        $options = [
+            'headers' => (['Accept-Encoding' => 'gzip']),
+        ];
+        try {
+            $this->client->send($request, $options);
+            $this->setCookie($this->client->getConfig('cookies'));
+        } catch (RequestException $e) {
+            $this->APIExceptionHandler($e);
+        }
+        $this->APIRequestBuilder();
     }
 
-    protected function APIResponseHandler($response) {
+    public function APIResponseHandler($response) {
         $contentType = $response->getHeader('Content-Type');
         $checkJSON = 'application/json';
-        $checkHTML = 'text/html';
-        $this->newZ1 = $response->getCookieByName('z1');
         if (strripos($contentType, $checkJSON)){
-            return new APIResponse(\GuzzleHttp\json_decode($response->getBody()));
-        }
-        elseif (strripos($contentType, $checkHTML)) {
-            DB::table('api_auth')
-                ->where('email', '=', Auth::user()->mail)
-                ->update([
-                    'A1' => $response->getCookieByName('A1')->getValue(),
-                    'L' => $response->getCookieByName('L')->getValue(),
-                ]);
-            $this->cookieZ1Changer($response->getCookieByName('Z1')->getValue());
-            return true;
+            return \GuzzleHttp\json_decode($response->getBody());
+            //new APIResponse->handler(
         }
         else {
             return 'Мы не знаем, что это такое';
-        }
-    }
-
-    protected function cookieZ1Changer(string $new) {
-        DB::table('api_auth')
-            ->where('email', '=', Auth::user()->mail)
-            ->update([
-                'Z1' => $new,
-            ]);
-    }
-
-    public static function setValuesFromCookies($headers, $jar) {
-        $jar1 = $jar->toArray();
-        $oldJar = $jar->toArray();
-
-        dump($oldJar);
-        dump($headers);
-        foreach ($oldJar as $jarElement) {
-            foreach($headers as $header) {
-                $arr = explode('; ', $header);
-                foreach ($arr as $piece) {
-                    $one = explode('=', $piece);
-                    if (array_key_exists($one[0], $jarElement)) {
-                        if (isSet($one[1])) {
-                            $jarElement[$one[0]] = $one[1];
-                        }
-                    }
-                }
-            }
         }
     }
 }
