@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\APIRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,10 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/users', function () {
-    if (rand(1, 10) < 3) {
-        abort(500, 'We could not retrieve the users');
-    }
-
-    return factory('App\User', 10)->make();
-});
+Route::match(['get','post'], '/request', 'RequestAPIController@makeRequest') -> name('makeRequest');

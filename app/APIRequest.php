@@ -13,9 +13,9 @@ use GuzzleHttp\Psr7\Request;
 
 class APIRequest extends Model
 {
-    public string $query/** @var string must be an array and have a next structure*/;
-    public CookieJar $cookie;
-    public Client $client;
+    private $query/** @var string must be an array and have a next structure*/;
+    private $cookie;
+    private $client;
 
     /**
      * @param $option
@@ -43,6 +43,8 @@ class APIRequest extends Model
      * subdomain = in this project ordinary "export";
      * domain = in this project "bgoperator.ru";
      * subdirectory = "yandex"
+     * @param array $data
+     * @return string
      */
 
     public function setQuery (array $data)
@@ -62,30 +64,30 @@ class APIRequest extends Model
 
     public function setCookie(CookieJar $cookie = null)
     {
-        ($this->cookie == $cookie) ? $this->$cookie = $cookie : new CookieJar();
+        $this->cookie = $cookie;
+        return $this->getCookie();
     }
-//        $this->apiQueryDomain = 'http://export.' . $this->domain . '/';
 
-    public function APIRequestBuilder(array $query = null, $headers = []) {
-        $this->client = new Client(['cookies' => true]);
-        $this->query = $this->setQuery($query);
-        $this->cookie = $this->getAuth();
+    public function APIRequestBuilder(array $query = []) {
+        if (!isset($this->client)) $this->setClient();
+        if (!isset($this->query)) $this->setQuery($query);
+        if (!isset($this->cookie))  $this->getAuth();
         $options = [
-            'headers' => array_merge(['Accept-Encoding' => 'gzip'], $headers),
+            'headers' => [
+                'Accept-Encoding' => 'gzip',
+                'Content-Type' => 'charset=utf-8'
+                ],
             'cookies' => $this->getCookie(),
         ];
-        if ($this)
-        $request = new Request('post', $query);
-        $this->APIRequestSender($request, $options);
+        $request = new Request('post', $this->getQuery());
+        return $this->APIRequestSender($request, $options);
     }
 
     public function APIRequestSender(Request $request, array $options) {
         try {
             $response = $this->client->send($request, $options);
-
         } catch (RequestException $e) {
             $this->APIExceptionHandler($e);
-            $this->counter += 1;
         }
         return $this->APIResponseHandler($response);
     }
@@ -94,17 +96,13 @@ class APIRequest extends Model
         $status = $code->getResponse()->getStatusCode();
         switch ($status) {
             case 401:
-                if ($this->counter < 10) {
-                    $this->getAuth();
-                } else {
-                    redirect('home');
-                }
+                $this->getAuth();
                 break;
             case 404:
-                redirect('404');
+                abort('404');
                 break;
             case preg_match('5[0-9]{2}', $status):
-                redirect('500');
+                abort('500');
                 break;
             default:
                 break;
@@ -112,19 +110,14 @@ class APIRequest extends Model
     }
 
     public function getAuth() {
-        $auth = DB::table('api_auth')
+        $authData = DB::table('api_auth')
             ->where('email', '=', 'admin@admin.ru')
             ->select('username', 'password')
             ->get();
-        //dump($auth[0]);
-        $auth->flatten();
-        dump($auth);
-        dump($auth->password);
-        dump($auth->username);
-        $auth[0]->pwd = $auth['password'];
-        //unset($auth['password']);
-        $auth[0]->login = $auth['username'];
-        //unset($auth['username']);
+        $auth = [
+            'login' => $authData[0]->username,
+            'pwd' => $authData[0]->password,
+            ];
 
         $uri = 'https://login.bgoperator.ru/auth?' . http_build_query($auth);
         $request = new Request('post', $uri);
@@ -137,15 +130,19 @@ class APIRequest extends Model
         } catch (RequestException $e) {
             $this->APIExceptionHandler($e);
         }
-        $this->APIRequestBuilder();
+        return $this->APIRequestBuilder();
     }
 
     public function APIResponseHandler($response) {
-        $contentType = $response->getHeader('Content-Type');
-        $checkJSON = 'application/json';
+        $contentType = $response->getHeader('Content-Type')[0];
+        $checkJSON = 'json';
+        $checkXML = 'xml';
         if (strripos($contentType, $checkJSON)){
-            return \GuzzleHttp\json_decode($response->getBody());
-            //new APIResponse->handler(
+            return (json_decode($response->getBody()));
+//            return $response->getBody();
+        }
+        elseif (strripos($contentType, $checkXML)){
+            return $response->getBody();
         }
         else {
             return 'Мы не знаем, что это такое';
