@@ -17,6 +17,7 @@ class CreateUserValuesTable extends Migration
             $table->string('id')->unique();
             $table->string('name', 255)->nullable();
             $table->string('entity', 255);
+            $table->string('api_id')->nullable();
         });
     }
 

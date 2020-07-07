@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
@@ -49,23 +48,24 @@ class APIRequest extends Model
 
     public function setQuery (array $data)
     {
-        $url = $data['ssl'] ? 'https://' : 'http://';
-        $url .= $data['subdomain'] . '.' . $data['domain'] . '/' . $data['subdirectory'] . '?';
-        $url .= http_build_query($data['values']);
+        $url = $data['scheme'] . "://" . $data['host'] . $data['path'] . "?";
+        $url .= is_string($data['query']) ? $data['query'] : http_build_query($data['query']);
+        foreach ($data['hotels'] as $num => $hotel) {
+//            dd(key($hotel));
+            $url .= '&F4=' . $hotel['F4'];
+        }
         $this->query = $url;
-        return $this->getQuery();
+//        dd($url);
     }
 
     public function setClient()
     {
         $this->client = new Client(['cookies' => true]);
-        return $this->getClient();
     }
 
     public function setCookie(CookieJar $cookie = null)
     {
         $this->cookie = $cookie;
-        return $this->getCookie();
     }
 
     public function APIRequestBuilder(array $query = []) {
@@ -135,17 +135,16 @@ class APIRequest extends Model
 
     public function APIResponseHandler($response) {
         $contentType = $response->getHeader('Content-Type')[0];
-        $checkJSON = 'json';
-        $checkXML = 'xml';
-        if (strripos($contentType, $checkJSON)){
+        if (strripos($contentType, 'json')){
             return (json_decode($response->getBody()));
-//            return $response->getBody();
+//            return ($response->getBody());
         }
-        elseif (strripos($contentType, $checkXML)){
-            return $response->getBody();
+        elseif (strripos($contentType, 'xml')){
+            return json_decode($response->getBody()->getContents());
+//            return new \SimpleXMLElement($response->getBody()->getContents());
         }
         else {
-            return 'Мы не знаем, что это такое';
+            return $response->getHeaders();
         }
     }
 }

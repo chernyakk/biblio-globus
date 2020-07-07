@@ -18,21 +18,25 @@ class UserValuesTableSeeder extends Seeder
                     'id' => 1,
                     'name' => 'ОК СОЧИ ПАРК ОТЕЛЬ 3',
                     'entity' => 'hotel',
+                    'api_id' => 102610084348,
                 ],
                 [
                     'id' => 2,
                     'name' => 'GAMMA SIRIUS (бывш. кв. Чистые Пруды) 3',
                     'entity' => 'hotel',
+                    'api_id' => 102610026611,
                 ],
                 [
                     'id' => 3,
                     'name' => 'SIGMA SIRIUS, пансионат (бывш. кв. Александровский сад) 3',
                     'entity' => 'hotel',
+                    'api_id' => 102610026739,
                 ],
                 [
                     'id' => 4,
                     'name' => 'ГОРКИ ГОРОД, апарт-отель 1',
                     'entity' => 'hotel',
+                    'api_id' => 102616630651,
                 ],
                 [
                     'id' => 5,
