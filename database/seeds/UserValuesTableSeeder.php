@@ -63,6 +63,18 @@ class UserValuesTableSeeder extends Seeder
                     'name' => 'Олимпийский парк',
                     'entity' => 'excursion',
                 ],
+                [
+                    'id' => 10,
+                    'name' => 'Идентификатор взрослого',
+                    'entity' => 'adult',
+                    'api_id' => '0130619840'
+                ],
+                [
+                    'id' => 11,
+                    'name' => 'Идентификатор ребёнка',
+                    'entity' => 'kid',
+                    'api_id' => '0140520100'
+                ],
             ]
         );
     }

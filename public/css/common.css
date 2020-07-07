@@ -1,0 +1,140 @@
+.whatparse {
+  width: fit-content;
+  margin: 30vh auto 0;
+}
+.whatparse__row {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  margin-bottom: 20px;
+}
+.whatparse__row--line {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.whatparse__row--small {
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+}
+.whatparse__label {
+  margin-bottom: 7px;
+  font-weight: 500;
+}
+.whatparse__input {
+  height: 56px;
+  padding: 0 7px;
+  font-size: 16px;
+  border-radius: 5px;
+  outline: none;
+  background-color: #fff;
+  border: 1px solid #1e88e5;
+}
+.whatparse__input:focus {
+  border-color: #0d47a1;
+  box-shadow: 0 3px 7px 0px #e0e0e0;
+}
+.parsed {
+  width: fit-content;
+  margin: 50px auto;
+  border-radius: 30px;
+  background-color: #fff;
+  box-shadow: 0 3px 7px 0px #e0e0e0;
+  padding: 20px 0;
+}
+@media (max-width: 690px) {
+  .parsed {
+    font-size: 14px;
+  }
+}
+.parsed__table {
+  width: 70vw;
+}
+@media (max-width: 690px) {
+  .parsed__table {
+    overflow-x: auto;
+  }
+}
+.parsed__row,
+.parsed__row:nth-child(even) {
+  transition: 0.3s cubic-bezier(0.25, 0.1, 0.22, 0.96);
+}
+.parsed__row:hover,
+.parsed__row:nth-child(even):hover {
+  background-color: #90caf9;
+}
+.parsed__row:nth-child(even) {
+  background-color: #e3f2fd;
+}
+.parsed__percent {
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+.parsed__label {
+  font-weight: 500;
+  margin-right: 10px;
+}
+@media (max-width: 690px) {
+  .parsed__label {
+    font-size: 15px;
+  }
+}
+.parsed__input {
+  height: 30px;
+  width: 50px;
+  padding: 0 7px;
+  font-size: 16px;
+  border-radius: 5px;
+  outline: none;
+  background-color: #fff;
+  border: 1px solid #1e88e5;
+}
+@media (max-width: 690px) {
+  .parsed__input {
+    font-size: 15px;
+    height: 30px;
+  }
+}
+.parsed__input:focus {
+  border-color: #0d47a1;
+  box-shadow: 0 3px 7px 0px #e0e0e0;
+}
+.parsed td,
+th {
+  padding: 15px;
+  line-height: 150%;
+}
+@media (max-width: 690px) {
+  .parsed td,
+  th {
+    padding: 10px;
+  }
+}
+.col-6 {
+  width: 70%;
+}
+.col-3 {
+  width: 15%;
+}
+* {
+  font-family: 'Roboto';
+}
+.cta {
+  font-size: 18px;
+  background-color: #0d47a1;
+  color: #fff;
+  padding: 10px 20px;
+  outline: none;
+  border-radius: 20px;
+  border: none;
+  transition: 0.3s cubic-bezier(0.25, 0.1, 0.22, 0.96);
+}
+.cta:hover {
+  box-shadow: 0 3px 7px 0px #e0e0e0;
+}
+a {
+  color: #fff;
+  text-decoration: none;
+}

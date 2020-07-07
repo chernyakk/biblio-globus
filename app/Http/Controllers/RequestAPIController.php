@@ -40,7 +40,8 @@ class RequestAPIController extends Controller {
 
         $date1 = new DateTime($request['date1']);
         $date2 = new DateTime($request['date2']);
-        $diffDate = $date1->diff($date2)->d;
+        $nowDate = date("d.m.Y", strtotime($request['date1']));
+        $diffDate = $date1->diff($date2)->d ? $date1->diff($date2)->d : 1;
 
         $data = [
             'scheme' => 'http',
@@ -52,8 +53,8 @@ class RequestAPIController extends Controller {
                 'flt2' => '100510000863',
                 'tid' => '211',
                 'id_price' => '-1',
-                'data' => $request['date1'],
-                'd2' => $request['date1'],
+                'data' => $nowDate,
+                'd2' => $nowDate,
                 'ins' => '0-250000-RUR',
                 'p' => substr($people,0, -1),
                 'xml' => '11',

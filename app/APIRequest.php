@@ -123,7 +123,7 @@ class APIRequest extends Model
     public function APIResponseHandler($response) {
         $contentType = $response->getHeader('Content-Type')[0];
         if (strripos($contentType, 'json')){
-            return (json_decode($response->getBody()))->entries;
+            return (json_decode($response->getBody())->entries);
         }
         elseif (strripos($contentType, 'xml')){
             return json_decode($response->getBody()->getContents());
