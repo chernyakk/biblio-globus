@@ -23,8 +23,6 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-//Route::match(['get', 'post'], '/json', 'HomeController@json');
+Route::get('/home', 'HomeController@spa')->name('home');
 
 //Route::get('/{any}', 'HomeController@spa')->where('any', '.*');

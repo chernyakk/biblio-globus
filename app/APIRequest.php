@@ -12,14 +12,11 @@ use GuzzleHttp\Psr7\Request;
 
 class APIRequest extends Model
 {
-    private $query/** @var string must be an array and have a next structure*/;
+    private $query;
     private $cookie;
     private $client;
 
-    /**
-     * @param $option
-     * @return string
-     */
+
     public function getQuery(): string
     {
         return $this->query;
@@ -35,27 +32,17 @@ class APIRequest extends Model
         return $this->cookie;
     }
 
-    /**
-     * setQuery is a method, which make HTTP query from array
-     * array construction must include:
-     * ssl = boolean, usually false;
-     * subdomain = in this project ordinary "export";
-     * domain = in this project "bgoperator.ru";
-     * subdirectory = "yandex"
-     * @param array $data
-     * @return string
-     */
-
     public function setQuery (array $data)
     {
         $url = $data['scheme'] . "://" . $data['host'] . $data['path'] . "?";
         $url .= is_string($data['query']) ? $data['query'] : http_build_query($data['query']);
         foreach ($data['hotels'] as $num => $hotel) {
-//            dd(key($hotel));
             $url .= '&F4=' . $hotel['F4'];
         }
+        foreach ($data['duration'] as $num => $date) {
+            $url .= '&f7=' . $date['f7'];
+        }
         $this->query = $url;
-//        dd($url);
     }
 
     public function setClient()
@@ -136,12 +123,10 @@ class APIRequest extends Model
     public function APIResponseHandler($response) {
         $contentType = $response->getHeader('Content-Type')[0];
         if (strripos($contentType, 'json')){
-            return (json_decode($response->getBody()));
-//            return ($response->getBody());
+            return (json_decode($response->getBody()))->entries;
         }
         elseif (strripos($contentType, 'xml')){
             return json_decode($response->getBody()->getContents());
-//            return new \SimpleXMLElement($response->getBody()->getContents());
         }
         else {
             return $response->getHeaders();
