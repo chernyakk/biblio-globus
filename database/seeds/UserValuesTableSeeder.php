@@ -42,26 +42,31 @@ class UserValuesTableSeeder extends Seeder
                     'id' => 5,
                     'name' => 'Сочи парк',
                     'entity' => 'excursion',
+                    'api_id' => '0'
                 ],
                 [
                     'id' => 6,
                     'name' => 'Чистые пруды',
                     'entity' => 'excursion',
+                    'api_id' => '0'
                 ],
                 [
                     'id' => 7,
                     'name' => 'Александровский сад',
                     'entity' => 'excursion',
+                    'api_id' => '0'
                 ],
                 [
                     'id' => 8,
                     'name' => 'Красная поляна (Горки город)',
                     'entity' => 'excursion',
+                    'api_id' => '0'
                 ],
                 [
                     'id' => 9,
                     'name' => 'Олимпийский парк',
                     'entity' => 'excursion',
+                    'api_id' => '0'
                 ],
                 [
                     'id' => 10,
