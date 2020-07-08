@@ -1,24 +1,11 @@
 <template>
     <div id="hotel-table">
-        <div class="loading" v-if="loading">
-            Loading...
-        </div>
-
-        <div v-if="error" class="error">
-            <p>{{ error }}</p>
-
-            <p>
-                <button @click.prevent="fetchData">
-                    Try Again
-                </button>
-            </p>
-        </div>
-
-
         <div class="parsed" id="table">
             <div class="parsed__percent">
                 <label for="percent" class="parsed__label">% наценки</label>
                 <input v-model="percent" type="number" id="percent" class="parsed__input input-number">
+                <button> Вернуться </button>
+                <button> Выгрузить .xls </button>
             </div>
             <table class="parsed__table">
                 <thead>
@@ -37,7 +24,7 @@
                 <tbody>
                     <tr class="parsed__row --sub" v-for="{ id_hotel, room, prices, quota, duration } in tours">
                         <td class="col-6">
-                            <strong>Отель:</strong> {{ id_hotel }},<br>
+                            <strong>Отель:</strong> {{ hotelNames[id_hotel] }},<br>
                             <strong>Тип:</strong> {{ room }},<br>
                             Свободных мест: {{quota}},<br>
                             Количество ночей: {{duration}}
@@ -52,39 +39,18 @@
 </template>
 
 <script>
-    import axios from 'axios';
     export default {
         data() {
             return {
-                loading: false,
-                tours: null,
-                error: null,
                 percent: 10,
+                hotelNames: {
+                    102616630651 : 'ГОРКИ ГОРОД, апарт-отель',
+                    102610026739 : 'SIGMA SIRIUS, пансионат (бывш. кв. Александровский сад)',
+                    102610026611 : 'GAMMA SIRIUS (бывш. кв. Чистые Пруды)',
+                    102610084348 : 'ОК СОЧИ ПАРК ОТЕЛЬ'
+                },
             };
         },
-        created() {
-            this.fetchData();
-        },
-        methods: {
-            fetchData() {
-                this.error = this.users = null;
-                this.loading = true;
-                axios
-                    .post('/api/request', {
-                        date1: '13.07.2020',
-                        date2: '17.07.2020',
-                        adults: '2',
-                        kids: '2'
-                    })
-                    .then(response => {
-                        this.loading = false;
-                        this.tours = response.data;
-                        console.log(response);
-                    }).catch(error => {
-                    this.loading = false;
-                    this.error = error.response.data.message || error.message;
-                });
-            }
-        },
+        props: ['tours'],
     }
 </script>

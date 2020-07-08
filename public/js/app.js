@@ -1908,8 +1908,6 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -1950,53 +1948,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      loading: false,
-      tours: null,
-      error: null,
-      percent: 10
+      percent: 10,
+      hotelNames: {
+        102616630651: 'ГОРКИ ГОРОД, апарт-отель',
+        102610026739: 'SIGMA SIRIUS, пансионат (бывш. кв. Александровский сад)',
+        102610026611: 'GAMMA SIRIUS (бывш. кв. Чистые Пруды)',
+        102610084348: 'ОК СОЧИ ПАРК ОТЕЛЬ'
+      }
     };
   },
-  created: function created() {
-    this.fetchData();
-  },
-  methods: {
-    fetchData: function fetchData() {
-      var _this = this;
-
-      this.error = this.users = null;
-      this.loading = true;
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/request', {
-        date1: '13.07.2020',
-        date2: '17.07.2020',
-        adults: '2',
-        kids: '2'
-      }).then(function (response) {
-        _this.loading = false;
-        _this.tours = response.data;
-        console.log(response);
-      })["catch"](function (error) {
-        _this.loading = false;
-        _this.error = error.response.data.message || error.message;
-      });
-    }
-  }
+  props: ['tours']
 });
 
 /***/ }),
@@ -2012,6 +1976,21 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2077,7 +2056,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.loading = false;
         _this.tours = response.data;
         _this.responsed = true;
-        console.log(response);
+        console.log(_this.tours);
       })["catch"](function (error) {
         _this.loading = false;
         _this.error = error.response.data.message || error.message;
@@ -37632,33 +37611,6 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "hotel-table" } }, [
-    _vm.loading
-      ? _c("div", { staticClass: "loading" }, [
-          _vm._v("\n        Loading...\n    ")
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.error
-      ? _c("div", { staticClass: "error" }, [
-          _c("p", [_vm._v(_vm._s(_vm.error))]),
-          _vm._v(" "),
-          _c("p", [
-            _c(
-              "button",
-              {
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.fetchData($event)
-                  }
-                }
-              },
-              [_vm._v("\n                Try Again\n            ")]
-            )
-          ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
     _c("div", { staticClass: "parsed", attrs: { id: "table" } }, [
       _c("div", { staticClass: "parsed__percent" }, [
         _c(
@@ -37687,7 +37639,11 @@ var render = function() {
               _vm.percent = $event.target.value
             }
           }
-        })
+        }),
+        _vm._v(" "),
+        _c("button", [_vm._v(" Вернуться ")]),
+        _vm._v(" "),
+        _c("button", [_vm._v(" Выгрузить .xls ")])
       ]),
       _vm._v(" "),
       _c("table", { staticClass: "parsed__table" }, [
@@ -37704,7 +37660,7 @@ var render = function() {
             return _c("tr", { staticClass: "parsed__row --sub" }, [
               _c("td", { staticClass: "col-6" }, [
                 _c("strong", [_vm._v("Отель:")]),
-                _vm._v(" " + _vm._s(id_hotel) + ","),
+                _vm._v(" " + _vm._s(_vm.hotelNames[id_hotel]) + ","),
                 _c("br"),
                 _vm._v(" "),
                 _c("strong", [_vm._v("Тип:")]),
@@ -37795,7 +37751,34 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "mainapp" } }, [
-    !_vm.responsed
+    _vm.loading
+      ? _c("div", { staticClass: "loading" }, [
+          _vm._v("\n        Loading...\n    ")
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.error
+      ? _c("div", { staticClass: "error" }, [
+          _c("p", [_vm._v(_vm._s(_vm.error))]),
+          _vm._v(" "),
+          _c("p", [
+            _c(
+              "button",
+              {
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.fetchData($event)
+                  }
+                }
+              },
+              [_vm._v("\n                Try Again\n            ")]
+            )
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.responsed && !_vm.loading
       ? _c("div", [
           _c(
             "form",
@@ -37959,7 +37942,9 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
-    _vm.responsed ? _c("div", [_c("hotels-prices")], 1) : _vm._e()
+    _vm.responsed
+      ? _c("div", [_c("hotels-prices", { attrs: { tours: _vm.tours } })], 1)
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -50208,15 +50193,14 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*!*************************************************!*\
   !*** ./resources/js/components/HotelPrices.vue ***!
   \*************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _HotelPrices_vue_vue_type_template_id_68804b03___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HotelPrices.vue?vue&type=template&id=68804b03& */ "./resources/js/components/HotelPrices.vue?vue&type=template&id=68804b03&");
 /* harmony import */ var _HotelPrices_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HotelPrices.vue?vue&type=script&lang=js& */ "./resources/js/components/HotelPrices.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _HotelPrices_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _HotelPrices_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -50246,7 +50230,7 @@ component.options.__file = "resources/js/components/HotelPrices.vue"
 /*!**************************************************************************!*\
   !*** ./resources/js/components/HotelPrices.vue?vue&type=script&lang=js& ***!
   \**************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

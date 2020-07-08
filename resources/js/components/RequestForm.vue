@@ -1,6 +1,21 @@
 <template>
     <div id="mainapp">
-        <div v-if="!responsed">
+
+        <div class="loading" v-if="loading">
+            Loading...
+        </div>
+
+        <div v-if="error" class="error">
+            <p>{{ error }}</p>
+
+            <p>
+                <button @click.prevent="fetchData">
+                    Try Again
+                </button>
+            </p>
+        </div>
+
+        <div v-if="!responsed && !loading">
             <form action="" class="whatparse" @submit="fetchData">
                 <div class="whatparse__row">
                     <label for="checkin" class="whatparse__label">Заезд</label>
@@ -29,7 +44,7 @@
         </div>
 
         <div v-if="responsed">
-            <hotels-prices></hotels-prices>
+            <hotels-prices :tours="tours" />
         </div>
     </div>
 </template>
@@ -64,7 +79,7 @@
                         this.loading = false;
                         this.tours = response.data;
                         this.responsed = true;
-                        console.log(response);
+                        console.log(this.tours);
                     }).catch(error => {
                     this.loading = false;
                     this.error = error.response.data.message || error.message;
