@@ -78,7 +78,6 @@
                         this.loading = false;
                         this.tours = response.data;
                         this.responsed = true;
-                        console.log(this.tours);
                     }).catch(error => {
                     this.loading = false;
                     this.error = "Что-то сломалось, обратитесь к разработчикам!"

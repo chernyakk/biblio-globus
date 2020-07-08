@@ -80,6 +80,12 @@ class UserValuesTableSeeder extends Seeder
                     'entity' => 'kid',
                     'api_id' => '0140520100'
                 ],
+                [
+                    'id' => 12,
+                    'name' => 'ОЛИМПИЙСКИЙ ПАРК, отель',
+                    'entity' => 'hotel',
+                    'api_id' => '102610145618'
+                ],
             ]
         );
     }

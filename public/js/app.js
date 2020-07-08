@@ -1908,6 +1908,8 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -1948,19 +1950,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       percent: 10,
+      hotelsToAPI: null,
+      targetFile: false,
       hotelNames: {
         102616630651: 'ГОРКИ ГОРОД, апарт-отель',
         102610026739: 'SIGMA SIRIUS, пансионат (бывш. кв. Александровский сад)',
         102610026611: 'GAMMA SIRIUS (бывш. кв. Чистые Пруды)',
-        102610084348: 'ОК СОЧИ ПАРК ОТЕЛЬ'
+        102610084348: 'ОК СОЧИ ПАРК ОТЕЛЬ',
+        102610145618: 'ОЛИМПИЙСКИЙ ПАРК'
       }
     };
   },
-  props: ['tours']
+  props: ['tours'],
+  methods: {
+    giveFile: function giveFile(hotels, percent) {
+      var _this = this;
+
+      this.hotelsToAPI = hotels;
+      this.percent = percent;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/excel', {
+        hotels: this.hotelsToAPI,
+        percent: this.percent
+      }).then(function (response) {
+        window.open(response.data);
+        _this.targetFile = response.data;
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -2055,7 +2080,6 @@ __webpack_require__.r(__webpack_exports__);
         _this.loading = false;
         _this.tours = response.data;
         _this.responsed = true;
-        console.log(_this.tours);
       })["catch"](function (error) {
         _this.loading = false;
         _this.error = "Что-то сломалось, обратитесь к разработчикам!";
@@ -37611,38 +37635,60 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "hotel-table" } }, [
     _c("div", { staticClass: "parsed", attrs: { id: "table" } }, [
-      _c("div", { staticClass: "parsed__percent" }, [
-        _c(
-          "label",
-          { staticClass: "parsed__label", attrs: { for: "percent" } },
-          [_vm._v("% наценки")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.percent,
-              expression: "percent"
-            }
-          ],
-          staticClass: "parsed__input input-number",
-          attrs: { type: "number", id: "percent" },
-          domProps: { value: _vm.percent },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+      _c("div", { staticClass: "parsed__topfield" }, [
+        _c("div", { staticClass: "parsed__percent" }, [
+          _c(
+            "label",
+            { staticClass: "parsed__label", attrs: { for: "percent" } },
+            [_vm._v("% наценки")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.percent,
+                expression: "percent"
               }
-              _vm.percent = $event.target.value
+            ],
+            staticClass: "parsed__input input-number",
+            attrs: { type: "number", id: "percent" },
+            domProps: { value: _vm.percent },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.percent = $event.target.value
+              }
             }
-          }
-        }),
+          })
+        ]),
         _vm._v(" "),
-        _c("button", [_vm._v(" Вернуться ")]),
-        _vm._v(" "),
-        _c("button", [_vm._v(" Выгрузить .xls ")])
+        _c("div", { staticClass: "parsed__buttons" }, [
+          _c(
+            "button",
+            {
+              staticClass: "cta form grey",
+              attrs: { onclick: "location.reload()" }
+            },
+            [_vm._v(" Вернуться ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "cta form",
+              on: {
+                click: function($event) {
+                  return _vm.giveFile(_vm.tours, _vm.percent)
+                }
+              }
+            },
+            [_vm._v(" Выгрузить .xls ")]
+          )
+        ])
       ]),
       _vm._v(" "),
       _c("table", { staticClass: "parsed__table" }, [
@@ -50128,9 +50174,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _components_RequestForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/RequestForm */ "./resources/js/components/RequestForm.vue");
 /* harmony import */ var _components_HotelPrices__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/HotelPrices */ "./resources/js/components/HotelPrices.vue");
+/* harmony import */ var _date_format__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./date.format */ "./resources/js/date.format.js");
+/* harmony import */ var _date_format__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_date_format__WEBPACK_IMPORTED_MODULE_3__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+
 
 
 
@@ -50322,6 +50371,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RequestForm_vue_vue_type_template_id_bdaf4550___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/date.format.js":
+/*!*************************************!*\
+  !*** ./resources/js/date.format.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nError: ENOENT: no such file or directory, open '/home/vagrant/code/biblio-interface/resources/js/date.format.js'");
 
 /***/ }),
 

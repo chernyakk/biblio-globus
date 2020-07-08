@@ -1,6 +1,6 @@
 .whatparse {
   width: fit-content;
-  margin: 30vh auto 0;
+  margin: 15vh auto 0;
 }
 .whatparse__row {
   display: flex;
@@ -68,9 +68,20 @@
 .parsed__row:nth-child(even) {
   background-color: #e3f2fd;
 }
+.parsed__topfield {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  margin-bottom: 20px;
+}
 .parsed__percent {
-  margin-left: 20px;
-  margin-bottom: 10px;
+  display: flex;
+  align-items: baseline;
+}
+@media (max-width: 690px) {
+  .parsed__percent {
+    margin-bottom: 10px;
+  }
 }
 .parsed__label {
   font-weight: 500;
@@ -133,6 +144,19 @@ th {
 }
 .cta:hover {
   box-shadow: 0 3px 7px 0px #e0e0e0;
+}
+.cta.grey {
+  background-color: #adadad;
+}
+.cta.form {
+  font-size: 14px;
+  padding: 7px 14px;
+  margin-right: 10px;
+}
+@media (max-width: 690px) {
+  .cta.form {
+    margin-right: 5px;
+  }
 }
 a {
   color: #fff;

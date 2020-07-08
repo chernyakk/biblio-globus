@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\APIRequest;
+use App\ExcelFile;
 use Illuminate\Http\Request;
 use DateTime;
 use Illuminate\Support\Facades\DB;
@@ -66,13 +67,14 @@ class RequestAPIController extends Controller {
         foreach($hotels as $hotel){
             array_push($data['hotels'], ['F4' => $hotel->api_id]);
         }
-        foreach(range($diffDate - 2, $diffDate - 1) as $days){
+        foreach(range($diffDate - 1, $diffDate) as $days){
             array_push($data['duration'], ['f7' => $days]);
         }
         return $result->APIRequestBuilder($data);
     }
 
     public static function makeExcel(Request $request) {
-        return 'Okay';
+        $file = new ExcelFile($request->all());
+        return $file->setValues();
     }
 }
