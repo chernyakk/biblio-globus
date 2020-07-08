@@ -5,7 +5,6 @@ window.Vue = require('vue');
 import Vue from 'vue'
 import RequestForm from "./components/RequestForm";
 import HotelPrices from "./components/HotelPrices";
-import './date.format';
 
 Vue.component('request-form', RequestForm);
 Vue.component('hotels-prices', HotelPrices);

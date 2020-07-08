@@ -50174,12 +50174,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _components_RequestForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/RequestForm */ "./resources/js/components/RequestForm.vue");
 /* harmony import */ var _components_HotelPrices__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/HotelPrices */ "./resources/js/components/HotelPrices.vue");
-/* harmony import */ var _date_format__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./date.format */ "./resources/js/date.format.js");
-/* harmony import */ var _date_format__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_date_format__WEBPACK_IMPORTED_MODULE_3__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-
 
 
 
@@ -50374,17 +50371,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/date.format.js":
-/*!*************************************!*\
-  !*** ./resources/js/date.format.js ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nError: ENOENT: no such file or directory, open '/home/vagrant/code/biblio-interface/resources/js/date.format.js'");
-
-/***/ }),
-
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -50403,8 +50389,8 @@ throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/vagrant/code/biblio-interface/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/vagrant/code/biblio-interface/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/vagrant/projects/bg-interface/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/vagrant/projects/bg-interface/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
