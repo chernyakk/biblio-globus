@@ -2,7 +2,7 @@
     <div id="mainapp">
 
         <div class="loading" v-if="loading">
-            Загружается список отелей...
+            Загружается список отелей.....
         </div>
 
         <div v-if="error" class="error">

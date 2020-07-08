@@ -37752,7 +37752,7 @@ var render = function() {
   return _c("div", { attrs: { id: "mainapp" } }, [
     _vm.loading
       ? _c("div", { staticClass: "loading" }, [
-          _vm._v("\n        Загружается список отелей...\n    ")
+          _vm._v("\n        Загружается список отелей.....\n    ")
         ])
       : _vm._e(),
     _vm._v(" "),
