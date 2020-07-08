@@ -20,3 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::match(['post'], '/request', 'RequestAPIController@makeRequest') -> name('makeRequest');
+
+Route::match(['post'], '/excel', 'RequestAPIController@makeExcel') -> name('makeExcel');

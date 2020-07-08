@@ -66,9 +66,13 @@ class RequestAPIController extends Controller {
         foreach($hotels as $hotel){
             array_push($data['hotels'], ['F4' => $hotel->api_id]);
         }
-        foreach(range(1, $diffDate) as $days){
+        foreach(range($diffDate - 2, $diffDate - 1) as $days){
             array_push($data['duration'], ['f7' => $days]);
         }
         return $result->APIRequestBuilder($data);
+    }
+
+    public static function makeExcel(Request $request) {
+        return 'Okay';
     }
 }

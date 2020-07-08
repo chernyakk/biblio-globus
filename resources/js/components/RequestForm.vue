@@ -2,7 +2,7 @@
     <div id="mainapp">
 
         <div class="loading" v-if="loading">
-            Loading...
+            Загружается список отелей...
         </div>
 
         <div v-if="error" class="error">
@@ -66,7 +66,6 @@
         },
         methods: {
             fetchData() {
-                this.error = this.users = null;
                 this.loading = true;
                 axios
                     .post('/api/request', {
@@ -82,7 +81,7 @@
                         console.log(this.tours);
                     }).catch(error => {
                     this.loading = false;
-                    this.error = error.response.data.message || error.message;
+                    this.error = "Что-то сломалось, обратитесь к разработчикам!"
                 });
             }
         },

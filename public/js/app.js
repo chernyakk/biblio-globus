@@ -2045,7 +2045,6 @@ __webpack_require__.r(__webpack_exports__);
     fetchData: function fetchData() {
       var _this = this;
 
-      this.error = this.users = null;
       this.loading = true;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/request', {
         date1: this.date1,
@@ -2059,7 +2058,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log(_this.tours);
       })["catch"](function (error) {
         _this.loading = false;
-        _this.error = error.response.data.message || error.message;
+        _this.error = "Что-то сломалось, обратитесь к разработчикам!";
       });
     }
   }
@@ -37753,7 +37752,7 @@ var render = function() {
   return _c("div", { attrs: { id: "mainapp" } }, [
     _vm.loading
       ? _c("div", { staticClass: "loading" }, [
-          _vm._v("\n        Loading...\n    ")
+          _vm._v("\n        Загружается список отелей...\n    ")
         ])
       : _vm._e(),
     _vm._v(" "),
@@ -50134,7 +50133,6 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
 
- // window.Vue = require('vue');
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('request-form', _components_RequestForm__WEBPACK_IMPORTED_MODULE_1__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('hotels-prices', _components_HotelPrices__WEBPACK_IMPORTED_MODULE_2__["default"]);
