@@ -123,12 +123,12 @@ th {
     padding: 10px;
   }
 }
-.col-6 {
-  width: 70%;
-}
-.col-3 {
-  width: 15%;
-}
+/*.col-6 {*/
+/*  width: 70%;*/
+/*}*/
+/*.col-3 {*/
+/*  width: 15%;*/
+/*}*/
 * {
   font-family: 'Roboto';
 }

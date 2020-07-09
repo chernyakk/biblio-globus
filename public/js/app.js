@@ -2055,7 +2055,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      responsed: false,
+      responded: false,
       loading: false,
       tours: null,
       error: null,
@@ -2071,6 +2071,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.loading = true;
+      this.error = null;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/request', {
         date1: this.date1,
         date2: this.date2,
@@ -2079,10 +2080,13 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         _this.loading = false;
         _this.tours = response.data;
-        _this.responsed = true;
+
+        if (!response.data.length) {
+          _this.error = "Не найдено ни одной подходящей записи с такими параметрами";
+        } else _this.responded = true;
       })["catch"](function (error) {
         _this.loading = false;
-        _this.error = "Что-то сломалось, обратитесь к разработчикам!";
+        _this.error = "Сервер не отвечает, попробуйте повторить позже или обратитесь к разработчикам!";
       });
     }
   }
@@ -37653,7 +37657,7 @@ var render = function() {
               }
             ],
             staticClass: "parsed__input input-number",
-            attrs: { type: "number", id: "percent" },
+            attrs: { type: "number", id: "percent", min: "0" },
             domProps: { value: _vm.percent },
             on: {
               input: function($event) {
@@ -37794,32 +37798,41 @@ var render = function() {
   return _c("div", { attrs: { id: "mainapp" } }, [
     _vm.loading
       ? _c("div", { staticClass: "loading" }, [
-          _vm._v("\n        Загружается список отелей.....\n    ")
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.error
-      ? _c("div", { staticClass: "error" }, [
-          _c("p", [_vm._v(_vm._s(_vm.error))]),
-          _vm._v(" "),
           _c("p", [
+            _vm._v("\n            Загружается список отелей...\n        ")
+          ]),
+          _vm._v(" "),
+          _c("div", [
             _c(
-              "button",
+              "svg",
               {
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.fetchData($event)
-                  }
+                attrs: {
+                  width: "100",
+                  height: "100",
+                  viewBox: "0 0 100 100",
+                  fill: "none"
                 }
               },
-              [_vm._v("\n                Try Again\n            ")]
+              [
+                _c("path", {
+                  attrs: {
+                    d:
+                      "M25 50C25 56.6304 27.6339 62.9893 32.3223 67.6777C37.0107 72.3661 43.3696 75 50 75C56.6304 75 62.9893 72.3661 67.6777 67.6777C72.3661 62.9893 75 56.6304 75 50C75 43.3696 72.3661 37.0107 67.6777 32.3223C62.9893 27.6339 56.6304 25 50 25C43.3696 25 37.0107 27.6339 32.3223 32.3223C27.6339 37.0107 25 43.3696 25 50"
+                  }
+                })
+              ]
             )
           ])
         ])
       : _vm._e(),
     _vm._v(" "),
-    !_vm.responsed && !_vm.loading
+    _vm.error
+      ? _c("div", { staticClass: "error" }, [
+          _c("p", [_vm._v(_vm._s(_vm.error))])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.responded && !_vm.loading
       ? _c("div", [
           _c(
             "form",
@@ -37930,6 +37943,7 @@ var render = function() {
                       type: "number",
                       name: "adults",
                       id: "grownups",
+                      min: "1",
                       required: ""
                     },
                     domProps: { value: _vm.adults },
@@ -37961,7 +37975,12 @@ var render = function() {
                       }
                     ],
                     staticClass: "whatparse__input input-number",
-                    attrs: { type: "number", name: "name", id: "kids" },
+                    attrs: {
+                      type: "number",
+                      name: "name",
+                      id: "kids",
+                      min: "0"
+                    },
                     domProps: { value: _vm.kids },
                     on: {
                       input: function($event) {
@@ -37983,7 +38002,7 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
-    _vm.responsed
+    _vm.responded
       ? _c("div", [_c("hotels-prices", { attrs: { tours: _vm.tours } })], 1)
       : _vm._e()
   ])

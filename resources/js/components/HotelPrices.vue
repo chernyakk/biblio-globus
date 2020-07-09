@@ -4,7 +4,7 @@
             <div class="parsed__topfield">
                 <div class="parsed__percent">
                     <label for="percent" class="parsed__label">% наценки</label>
-                    <input v-model="percent" type="number" id="percent" class="parsed__input input-number">
+                    <input v-model="percent" type="number" id="percent" class="parsed__input input-number" min="0">
                 </div>
                 <div class="parsed__buttons">
                     <button class="cta form grey" onclick="location.reload()"> Вернуться </button>

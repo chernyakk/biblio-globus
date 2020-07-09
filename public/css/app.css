@@ -10928,3 +10928,59 @@ a.text-dark:focus {
   }
 }
 
+svg {
+  -webkit-animation: spin 3s linear infinite;
+          animation: spin 3s linear infinite;
+  margin-left: 45px;
+}
+
+.loading {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: fixed;
+  margin: auto;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+@-webkit-keyframes spin {
+  from {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(1turn);
+  }
+}
+
+path {
+  fill: none;
+  stroke: dodgerblue;
+  stroke-width: 5;
+  stroke-dasharray: 376;
+  stroke-dashoffset: 752;
+  stroke-linecap: round;
+  -webkit-animation: load 2s ease-in-out infinite;
+          animation: load 2s ease-in-out infinite;
+}
+
+@-webkit-keyframes load {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes load {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+

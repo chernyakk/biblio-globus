@@ -22,14 +22,17 @@ class ExcelFile
     public function setValues() {
         $nowArray = $this->data;
         $this->spreadSheet->getActiveSheet()->fromArray($nowArray, NULL, 'A1');
+        foreach(range('A','F') as $columnID){
+            $this->spreadSheet->getActiveSheet()->getColumnDimension($columnID) ->setAutoSize(true);
+        }
         $file = new Xlsx($this->spreadSheet);
         $nowDate = new \DateTime();
         try {
-            $file->save('./storage/hotels' . $nowDate->format('dmYHis') . '.xlsx');
+            $file->save('./storage/hotels' . $nowDate->format('dmYHi') . '.xlsx');
         } catch (Exception $e) {
             return $e;
         }
-        return Storage::url('hotels' . $nowDate->format('dmYHis') . '.xlsx');
+        return Storage::url('hotels' . $nowDate->format('dmYHi') . '.xlsx');
     }
 
     private function formatArray(array $array){

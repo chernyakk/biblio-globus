@@ -6,3 +6,43 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+$line-width : 5;
+$duration : 2s;
+$easing : ease-in-out;
+
+svg {
+    animation: spin $duration*1.5 linear infinite;
+    margin-left: 45px;
+    //left: 0;
+    //right: 0;
+    //top: 0;
+    //bottom: 0;
+    //position: fixed;
+    //margin: auto;
+}
+
+.loading {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: fixed;
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
+}
+
+@keyframes spin { from { transform: rotate(1turn); } }
+
+path {
+    fill: none;
+    stroke: dodgerblue;
+    stroke-width: $line-width;
+    stroke-dasharray: 376;
+    stroke-dashoffset: 376*2;
+    stroke-linecap: round;
+    animation: load $duration $easing infinite;
+}
+
+@keyframes load { to { stroke-dashoffset: 0; } }
