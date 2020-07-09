@@ -30,8 +30,8 @@
                         <td class="col-6">
                             <strong>Отель:</strong> {{ hotelNames[id_hotel] }},<br>
                             <strong>Тип:</strong> {{ room }},<br>
-                            Свободных мест: {{quota}},<br>
-                            Количество ночей: {{duration}}
+                            <strong>Свободных мест:</strong> {{quota}},<br>
+                            <strong>Количество ночей:</strong> {{duration}}
                         </td>
                         <td class="col-3">{{prices[0].amount}}</td>
                         <td class="col-3">{{(Number(prices[0].amount) * (1 + '.' + percent)).toFixed(0)}}</td>
