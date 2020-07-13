@@ -15,16 +15,12 @@ class APIRequest extends Model
     private $query;
     private $cookie;
     private $client;
+    private $userMail;
 
 
     public function getQuery(): string
     {
         return $this->query;
-    }
-
-    public function getClient(): Client
-    {
-        return $this->client;
     }
 
     public function getCookie(): CookieJar
@@ -39,9 +35,6 @@ class APIRequest extends Model
         foreach ($data['hotels'] as $num => $hotel) {
             $url .= '&F4=' . $hotel['F4'];
         }
-//        foreach ($data['duration'] as $num => $date) {
-//            $url .= '&f7=' . $date['f7'];
-//        }
         $this->query = $url;
     }
 
@@ -55,7 +48,8 @@ class APIRequest extends Model
         $this->cookie = $cookie;
     }
 
-    public function APIRequestBuilder(array $query = []) {
+    public function APIRequestBuilder(array $query = [], $mail = 'admin@admin.ru') {
+        if (!isset($this->userId)) $this->userMail = $mail;
         if (!isset($this->client)) $this->setClient();
         if (!isset($this->query)) $this->setQuery($query);
         if (!isset($this->cookie))  $this->getAuth();
@@ -98,7 +92,7 @@ class APIRequest extends Model
 
     public function getAuth() {
         $authData = DB::table('api_auth')
-            ->where('email', '=', 'admin@admin.ru')
+            ->where('email', '=', $this->userMail)
             ->select('username', 'password')
             ->get();
         $auth = [
