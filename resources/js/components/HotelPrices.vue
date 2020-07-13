@@ -68,6 +68,7 @@
                     .post('/api/excel', {
                         hotels: this.hotelsToAPI,
                         percent: this.percent,
+                        api_token: document.cookie.match ( '(^|;) ?' + 'api_token' + '=([^;]*)(;|$)' )[2],
                     })
                     .then(response => {
                         window.open(response.data)

@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\APIRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,10 +14,6 @@ use App\APIRequest;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:api')->post('/request', 'RequestAPIController@makeRequest') -> name('makeRequest');
 
-Route::match(['post'], '/request', 'RequestAPIController@makeRequest') -> name('makeRequest');
-
-Route::match(['post'], '/excel', 'RequestAPIController@makeExcel') -> name('makeExcel');
+Route::middleware('auth:api')->post( '/excel', 'RequestAPIController@makeExcel') -> name('makeExcel');

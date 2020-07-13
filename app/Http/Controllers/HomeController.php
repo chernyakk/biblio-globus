@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 class HomeController extends Controller
 {
     /**
@@ -21,6 +24,14 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $token = DB::table('users')
+            ->select('api_token')
+            ->where('id', '=', Auth::id())
+            ->first()
+            ->api_token;
+
+        setcookie('api_token', $token);
+
         return view('home');
     }
 

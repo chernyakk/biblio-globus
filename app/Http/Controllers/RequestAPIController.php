@@ -9,7 +9,8 @@ use DateTime;
 use Illuminate\Support\Facades\DB;
 
 class RequestAPIController extends Controller {
-    public static function makeRequest(Request $request){
+
+    public function makeRequest(Request $request){
         $result = new APIRequest();
         $request = $request->all();
 
@@ -59,21 +60,26 @@ class RequestAPIController extends Controller {
                 'ins' => '0-250000-RUR',
                 'p' => substr($people,0, -1),
                 'xml' => '11',
+                'f7' => $diffDate,
+
             ],
             'hotels' => [],
-            'duration' => [],
+//            'duration' => [],
         ];
 
         foreach($hotels as $hotel){
             array_push($data['hotels'], ['F4' => $hotel->api_id]);
         }
-        foreach(range($diffDate - 1, $diffDate) as $days){
-            array_push($data['duration'], ['f7' => $days]);
-        }
+
+        // функционал под неконкретное количество дней, пока нет необходимости
+        //        foreach(range($diffDate - 1, $diffDate) as $days){
+        //            array_push($data['duration'], ['f7' => $days]);
+        //        }
+
         return $result->APIRequestBuilder($data);
     }
 
-    public static function makeExcel(Request $request) {
+    public function makeExcel(Request $request) {
         $file = new ExcelFile($request->all());
         return $file->setValues();
     }

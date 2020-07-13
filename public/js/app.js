@@ -1979,7 +1979,8 @@ __webpack_require__.r(__webpack_exports__);
       this.percent = percent;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/excel', {
         hotels: this.hotelsToAPI,
-        percent: this.percent
+        percent: this.percent,
+        api_token: document.cookie.match('(^|;) ?' + 'api_token' + '=([^;]*)(;|$)')[2]
       }).then(function (response) {
         window.open(response.data);
         _this.targetFile = response.data;
@@ -2076,7 +2077,8 @@ __webpack_require__.r(__webpack_exports__);
         date1: this.date1,
         date2: this.date2,
         adults: this.adults,
-        kids: this.kids
+        kids: this.kids,
+        api_token: document.cookie.match('(^|;) ?' + 'api_token' + '=([^;]*)(;|$)')[2]
       }).then(function (response) {
         _this.loading = false;
         _this.tours = response.data;

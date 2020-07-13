@@ -39,9 +39,9 @@ class APIRequest extends Model
         foreach ($data['hotels'] as $num => $hotel) {
             $url .= '&F4=' . $hotel['F4'];
         }
-        foreach ($data['duration'] as $num => $date) {
-            $url .= '&f7=' . $date['f7'];
-        }
+//        foreach ($data['duration'] as $num => $date) {
+//            $url .= '&f7=' . $date['f7'];
+//        }
         $this->query = $url;
     }
 

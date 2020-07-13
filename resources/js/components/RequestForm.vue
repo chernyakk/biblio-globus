@@ -74,7 +74,8 @@
                     date2: this.date2,
                     adults: this.adults,
                     kids: this.kids,
-                })
+                    api_token: document.cookie.match ( '(^|;) ?' + 'api_token' + '=([^;]*)(;|$)' )[2],
+                    })
                 .then(response => {
                     this.loading = false;
                     this.tours = response.data;
