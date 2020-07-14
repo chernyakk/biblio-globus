@@ -41,10 +41,8 @@ class RequestAPIController extends Controller {
             }
         }
 
-        $date1 = new DateTime($request['date1']);
-        $date2 = new DateTime($request['date2']);
-        $nowDate = date("d.m.Y", strtotime($request['date1']));
-        $diffDate = $date1->diff($date2)->d ? $date1->diff($date2)->d : 1;
+        $nowDate = date("d.m.Y", strtotime($request['date']));
+        $diffDate = $request['diffDate'];
 
         $data = [
             'scheme' => 'http',

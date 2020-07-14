@@ -58,11 +58,16 @@
                 tours: null,
                 error: null,
                 percent: 10,
-                date1 : '2020-07-17',
-                date2 : '2020-07-27',
-                adults: '2',
-                kids: '2',
+                date1: this.$moment().add(1, 'days').format('YYYY-MM-DD'),
+                date2: this.$moment().add(8, 'days').format('YYYY-MM-DD'),
+                adults: '1',
+                kids: '0',
             };
+        },
+        computed: {
+            diffDate: function () {
+                return this.$moment(this.date2).diff(this.$moment(this.date1), 'days');
+            }
         },
         methods: {
             fetchData() {
@@ -70,17 +75,17 @@
                 this.error = null;
                 axios
                 .post('/api/request', {
-                    date1: this.date1,
-                    date2: this.date2,
+                    date: this.date1,
+                    diffDate: this.diffDate,
                     adults: this.adults,
                     kids: this.kids,
                     api_token: document.cookie.match ( '(^|;) ?' + 'api_token' + '=([^;]*)(;|$)' )[2],
-                    })
+                })
                 .then(response => {
                     this.loading = false;
                     this.tours = response.data;
                     if (!response.data.length) {
-                        this.error = "Не найдено ни одной подходящей записи с такими параметрами";
+                        this.error = "Не задано ни одной подходящей записи с такими параметрами";
                     }
                     else this.responded = true;
                 })
