@@ -46,11 +46,11 @@ class ExcelFile
         $file = new Xlsx($this->spreadSheet);
         $nowDate = new \DateTime();
         try {
-            $file->save('./storage/hotels' . $nowDate->format('dmYHis') . '.xlsx');
+            $file->save('./storage/xlsx/hotels' . $nowDate->format('dmYHis') . '.xlsx');
         } catch (Exception $e) {
             return $e->getMessage();
         }
-        return Storage::url('hotels' . $nowDate->format('dmYHis') . '.xlsx');
+        return Storage::url('xlsx/hotels' . $nowDate->format('dmYHis') . '.xlsx');
     }
 
     private function formatArray(array $array){

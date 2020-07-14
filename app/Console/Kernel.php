@@ -4,6 +4,9 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,7 +27,17 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+
+        $schedule->call(function () {
+            $files = Storage::files('public/xlsx');
+            if ($files){
+                Storage::delete($files);
+                Log::info('All temporary .xlsx files were deleted at: '. Carbon::now());
+            }
+            else {
+                Log::info('No .xlsx files at: '. Carbon::now());
+            }
+        })->daily()->timezone('Europe/Moscow');
     }
 
     /**

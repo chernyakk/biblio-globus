@@ -1960,7 +1960,6 @@ __webpack_require__.r(__webpack_exports__);
     return {
       percent: 10,
       hotelsToAPI: null,
-      targetFile: false,
       hotelNames: {
         102616630651: 'ГОРКИ ГОРОД, апарт-отель',
         102610026739: 'SIGMA SIRIUS, пансионат (бывш. кв. Александровский сад)',
@@ -1973,8 +1972,6 @@ __webpack_require__.r(__webpack_exports__);
   props: ['tours'],
   methods: {
     giveFile: function giveFile(hotels, percent) {
-      var _this = this;
-
       this.hotelsToAPI = hotels;
       this.percent = percent;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/excel', {
@@ -1983,7 +1980,6 @@ __webpack_require__.r(__webpack_exports__);
         api_token: document.cookie.match('(^|;) ?' + 'api_token' + '=([^;]*)(;|$)')[2]
       }).then(function (response) {
         window.open(response.data);
-        _this.targetFile = response.data;
       });
     }
   }
@@ -37711,15 +37707,15 @@ var render = function() {
             return _c("tr", { staticClass: "parsed__row --sub" }, [
               _c("td", { staticClass: "col-6" }, [
                 _c("strong", [_vm._v("Отель:")]),
-                _vm._v(" " + _vm._s(_vm.hotelNames[id_hotel]) + ","),
+                _vm._v(" " + _vm._s(_vm.hotelNames[id_hotel])),
                 _c("br"),
                 _vm._v(" "),
                 _c("strong", [_vm._v("Тип:")]),
-                _vm._v(" " + _vm._s(room) + ","),
+                _vm._v(" " + _vm._s(room)),
                 _c("br"),
                 _vm._v(" "),
                 _c("strong", [_vm._v("Свободных мест:")]),
-                _vm._v(" " + _vm._s(quota) + ","),
+                _vm._v(" " + _vm._s(quota)),
                 _c("br"),
                 _vm._v(" "),
                 _c("strong", [_vm._v("Количество ночей:")]),

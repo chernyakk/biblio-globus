@@ -34,9 +34,13 @@ For deploying this project you need doing next actions:
 ```bash
 composer install
 
-php artisan ui vue
+php artisan ui vue (unnecessary, just if npm will throw error about laravel mix)
 
 php artisan migrate --seed
+
+cd storage/app/public && mkdir xlsx
+
+crontab -e //and add in end of file string "    * * * * * php /path/to/artisan schedule:run 1>> /dev/null 2>&1"
 
 npm install
 

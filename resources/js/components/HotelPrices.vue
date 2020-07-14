@@ -28,9 +28,9 @@
                 <tbody>
                     <tr class="parsed__row --sub" v-for="{ id_hotel, room, prices, quota, duration } in tours">
                         <td class="col-6">
-                            <strong>Отель:</strong> {{ hotelNames[id_hotel] }},<br>
-                            <strong>Тип:</strong> {{ room }},<br>
-                            <strong>Свободных мест:</strong> {{quota}},<br>
+                            <strong>Отель:</strong> {{ hotelNames[id_hotel] }}<br>
+                            <strong>Тип:</strong> {{ room }}<br>
+                            <strong>Свободных мест:</strong> {{quota}}<br>
                             <strong>Количество ночей:</strong> {{duration}}
                         </td>
                         <td class="col-3">{{prices[0].amount}}</td>
@@ -49,7 +49,6 @@
             return {
                 percent: 10,
                 hotelsToAPI: null,
-                targetFile: false,
                 hotelNames: {
                     102616630651 : 'ГОРКИ ГОРОД, апарт-отель',
                     102610026739 : 'SIGMA SIRIUS, пансионат (бывш. кв. Александровский сад)',
@@ -72,7 +71,6 @@
                     })
                     .then(response => {
                         window.open(response.data)
-                        this.targetFile = response.data;
                     })
             }
         }
