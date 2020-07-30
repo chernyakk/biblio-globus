@@ -69,8 +69,8 @@ class ExcelFile
                     ->where('api_id', '=', $element['id_hotel'])->first()->name,
                 'Номер' => $element['room'],
                 'Количество ночей' => $element['duration'],
-                'Цена' => $element['prices'][0]['amount'],
-                'Цена с наценкой в ' . $percent . '%' => round($element['prices'][0]['amount'] * (float)('1.' . $percent)),
+                'Цена' => $element['prices']['total'],
+                'Цена с наценкой в ' . $percent . '%' => round($element['prices']['total'] * (float)('1.' . $percent)),
             ]);
         }
         array_unshift($returnArray, array_keys($returnArray[0]));

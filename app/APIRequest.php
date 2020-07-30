@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
@@ -10,7 +9,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 
 
-class APIRequest extends Model
+class APIRequest
 {
     private $query;
     private $cookie;
@@ -28,7 +27,7 @@ class APIRequest extends Model
         return $this->cookie;
     }
 
-    public function setQuery (array $data)
+    public function setQuery (array $data) : void
     {
         $url = $data['scheme'] . "://" . $data['host'] . $data['path'] . "?";
         $url .= is_string($data['query']) ? $data['query'] : http_build_query($data['query']);
@@ -38,12 +37,12 @@ class APIRequest extends Model
         $this->query = $url;
     }
 
-    public function setClient()
+    public function setClient() : void
     {
         $this->client = new Client(['cookies' => true]);
     }
 
-    public function setCookie(CookieJar $cookie = null)
+    public function setCookie(CookieJar $cookie) : void
     {
         $this->cookie = $cookie;
     }
@@ -117,10 +116,20 @@ class APIRequest extends Model
     public function APIResponseHandler($response) {
         $contentType = $response->getHeader('Content-Type')[0];
         if (strripos($contentType, 'json')){
-            return (json_decode($response->getBody())->entries);
-        }
-        elseif (strripos($contentType, 'xml')){
-            return json_decode($response->getBody()->getContents());
+            $returnValues = [];
+            foreach ((json_decode($response->getBody(), true)['entries']) as $entry) {
+                $returnValues[] = array(
+                    'id_hotel' => $entry['id_hotel'],
+                    'room' => $entry['room'],
+                    'quota' => $entry['quota'],
+                    'duration' => $entry['duration'],
+                    'prices' => array(
+                        'total' => $entry['prices'][0]['amount'],
+                        'separate' => [],
+                    )
+                );
+            }
+            return $returnValues;
         }
         else {
             return $response->getHeaders();

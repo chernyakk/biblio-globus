@@ -25,4 +25,6 @@ Route::get('/', function () {
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/test', 'RequestAPIController@getAllDaysPrices')->name('test');
+
 //Route::get('/{any}', 'HomeController@spa')->where('any', '.*');

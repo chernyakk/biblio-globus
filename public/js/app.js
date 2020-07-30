@@ -1954,6 +1954,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1965,7 +1979,8 @@ __webpack_require__.r(__webpack_exports__);
         102610026739: 'SIGMA SIRIUS, пансионат (бывш. кв. Александровский сад)',
         102610026611: 'GAMMA SIRIUS (бывш. кв. Чистые Пруды)',
         102610084348: 'ОК СОЧИ ПАРК ОТЕЛЬ',
-        102610145618: 'ОЛИМПИЙСКИЙ ПАРК'
+        102610172080: 'DELTA SIRIUS, гостиница 3*',
+        102610171604: 'DELTA SIRIUS, гостиница 3*'
       }
     };
   },
@@ -2048,6 +2063,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2060,7 +2079,8 @@ __webpack_require__.r(__webpack_exports__);
       date1: this.$moment().add(1, 'days').format('YYYY-MM-DD'),
       date2: this.$moment().add(8, 'days').format('YYYY-MM-DD'),
       adults: '1',
-      kids: '0'
+      kids: '0',
+      days: false
     };
   },
   computed: {
@@ -2081,6 +2101,7 @@ __webpack_require__.r(__webpack_exports__);
         kids: this.kids,
         api_token: document.cookie.match('(^|;) ?' + 'api_token' + '=([^;]*)(;|$)')[2]
       }).then(function (response) {
+        console.log(response);
         _this.loading = false;
         _this.tours = response.data;
 
@@ -58890,19 +58911,20 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("table", { staticClass: "parsed__table" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "tbody",
+      _c(
+        "div",
+        { staticClass: "parsed__table" },
+        [
+          _vm._m(0),
+          _vm._v(" "),
           _vm._l(_vm.tours, function(ref) {
             var id_hotel = ref.id_hotel
             var room = ref.room
             var prices = ref.prices
             var quota = ref.quota
             var duration = ref.duration
-            return _c("tr", { staticClass: "parsed__row --sub" }, [
-              _c("td", { staticClass: "col-6" }, [
+            return _c("div", { staticClass: "parsed__row --sub" }, [
+              _c("div", { staticClass: "parsed__td" }, [
                 _c("strong", [_vm._v("Отель:")]),
                 _vm._v(" " + _vm._s(_vm.hotelNames[id_hotel])),
                 _c("br"),
@@ -58916,28 +58938,27 @@ var render = function() {
                 _c("br"),
                 _vm._v(" "),
                 _c("strong", [_vm._v("Количество ночей:")]),
-                _vm._v(" " + _vm._s(duration) + "\n                    ")
+                _vm._v(" " + _vm._s(duration) + "\n                ")
               ]),
               _vm._v(" "),
-              _c("td", { staticClass: "col-3" }, [
-                _vm._v(_vm._s(prices[0].amount))
+              _c("div", { staticClass: "parsed__td" }, [
+                _vm._v(_vm._s(prices.total))
               ]),
               _vm._v(" "),
-              _c("td", { staticClass: "col-3" }, [
+              _c("div", { staticClass: "parsed__td" }, [
                 _vm._v(
                   _vm._s(
-                    (
-                      Number(prices[0].amount) *
-                      (1 + "." + _vm.percent)
-                    ).toFixed(0)
+                    (Number(prices.total) * (1 + "." + _vm.percent)).toFixed(0)
                   )
                 )
-              ])
+              ]),
+              _vm._v(" "),
+              _vm._m(1, true)
             ])
-          }),
-          0
-        )
-      ])
+          })
+        ],
+        2
+      )
     ])
   ])
 }
@@ -58946,25 +58967,45 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", { staticClass: "parsed__row --main" }, [
-        _c("th", { staticClass: "col-6" }, [
-          _vm._v(
-            "\n                        Места/питание\n                    "
-          )
+    return _c("div", { staticClass: "parsed__row --main" }, [
+      _c("div", { staticClass: "parsed__td" }, [
+        _c("strong", [_vm._v("Места/питание")])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "parsed__td" }, [
+        _c("strong", [_vm._v("Цена стандарт")])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "parsed__td" }, [
+        _c("strong", [_vm._v("Цена с наценкой")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "parsed__td--full" }, [
+      _c("li", { staticClass: "parsed__row--small --main" }, [
+        _c("div", { staticClass: "parsed__td--small" }, [
+          _c("strong", [_vm._v("Число")])
         ]),
         _vm._v(" "),
-        _c("th", { staticClass: "col-3" }, [
-          _vm._v(
-            "\n                        Цена стандарт\n                    "
-          )
+        _c("div", { staticClass: "parsed__td--small" }, [
+          _c("strong", [_vm._v("Цена стандарт")])
         ]),
         _vm._v(" "),
-        _c("th", { staticClass: "col-3" }, [
-          _vm._v(
-            "\n                        Цена с наценкой\n                    "
-          )
+        _c("div", { staticClass: "parsed__td--small" }, [
+          _c("strong", [_vm._v("Цена с наценкой")])
         ])
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "parsed__row--small" }, [
+        _c("div", [_vm._v("07.09.2020")]),
+        _vm._v(" "),
+        _c("div", [_vm._v("2300")]),
+        _vm._v(" "),
+        _c("div", [_vm._v("2700")])
       ])
     ])
   }
@@ -59187,6 +59228,55 @@ var render = function() {
                     }
                   })
                 ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "whatparse__row--checkbox" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.days,
+                      expression: "days"
+                    }
+                  ],
+                  attrs: { type: "checkbox", name: "days", id: "days" },
+                  domProps: {
+                    checked: Array.isArray(_vm.days)
+                      ? _vm._i(_vm.days, null) > -1
+                      : _vm.days
+                  },
+                  on: {
+                    change: function($event) {
+                      var $$a = _vm.days,
+                        $$el = $event.target,
+                        $$c = $$el.checked ? true : false
+                      if (Array.isArray($$a)) {
+                        var $$v = null,
+                          $$i = _vm._i($$a, $$v)
+                        if ($$el.checked) {
+                          $$i < 0 && (_vm.days = $$a.concat([$$v]))
+                        } else {
+                          $$i > -1 &&
+                            (_vm.days = $$a
+                              .slice(0, $$i)
+                              .concat($$a.slice($$i + 1)))
+                        }
+                      } else {
+                        _vm.days = $$c
+                      }
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "whatparse__label--checkbox",
+                    attrs: { for: "days" }
+                  },
+                  [_vm._v("Отобразить цены по дням")]
+                )
               ]),
               _vm._v(" "),
               _c("button", { staticClass: "cta", attrs: { type: "submit" } }, [

@@ -11,33 +11,47 @@
                     <button class="cta form" v-on:click="giveFile(tours, percent)"> Выгрузить .xls </button>
                 </div>
             </div>
-            <table class="parsed__table">
-                <thead>
-                    <tr class="parsed__row --main">
-                        <th class="col-6">
-                            Места/питание
-                        </th>
-                        <th class="col-3">
-                            Цена стандарт
-                        </th>
-                        <th class="col-3">
-                            Цена с наценкой
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="parsed__row --sub" v-for="{ id_hotel, room, prices, quota, duration } in tours">
-                        <td class="col-6">
-                            <strong>Отель:</strong> {{ hotelNames[id_hotel] }}<br>
-                            <strong>Тип:</strong> {{ room }}<br>
-                            <strong>Свободных мест:</strong> {{quota}}<br>
-                            <strong>Количество ночей:</strong> {{duration}}
-                        </td>
-                        <td class="col-3">{{prices[0].amount}}</td>
-                        <td class="col-3">{{(Number(prices[0].amount) * (1 + '.' + percent)).toFixed(0)}}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="parsed__table">
+                <div class="parsed__row --main">
+                    <div class="parsed__td">
+                        <strong>Места/питание</strong>
+                    </div>
+                    <div class="parsed__td">
+                        <strong>Цена стандарт</strong>
+                    </div>
+                    <div class="parsed__td">
+                        <strong>Цена с наценкой</strong>
+                    </div>
+                </div>
+                <div class="parsed__row --sub" v-for="{ id_hotel, room, prices, quota, duration } in tours">
+                    <div class="parsed__td">
+                        <strong>Отель:</strong> {{ hotelNames[id_hotel] }}<br>
+                        <strong>Тип:</strong> {{ room }}<br>
+                        <strong>Свободных мест:</strong> {{quota}}<br>
+                        <strong>Количество ночей:</strong> {{duration}}
+                    </div>
+                    <div class="parsed__td">{{prices.total}}</div>
+                    <div class="parsed__td">{{(Number(prices.total) * (1 + '.' + percent)).toFixed(0)}}</div>
+                    <ul class="parsed__td--full">
+                        <li class="parsed__row--small --main">
+                            <div class="parsed__td--small">
+                                <strong>Число</strong>
+                            </div>
+                            <div class="parsed__td--small">
+                                <strong>Цена стандарт</strong>
+                            </div>
+                            <div class="parsed__td--small">
+                                <strong>Цена с наценкой</strong>
+                            </div>
+                        </li>
+                        <li class="parsed__row--small">
+                            <div>07.09.2020</div>
+                            <div>2300</div>
+                            <div>2700</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -47,14 +61,15 @@
     export default {
         data() {
             return {
-                percent: 10,
+                percent: 50,
                 hotelsToAPI: null,
                 hotelNames: {
                     102616630651 : 'ГОРКИ ГОРОД, апарт-отель',
                     102610026739 : 'SIGMA SIRIUS, пансионат (бывш. кв. Александровский сад)',
                     102610026611 : 'GAMMA SIRIUS (бывш. кв. Чистые Пруды)',
                     102610084348 : 'ОК СОЧИ ПАРК ОТЕЛЬ',
-                    102610145618 : 'ОЛИМПИЙСКИЙ ПАРК'
+                    102610172080 : 'DELTA SIRIUS, гостиница 3*',
+                    102610171604 : 'DELTA SIRIUS, гостиница 3*',
                 },
             };
         },

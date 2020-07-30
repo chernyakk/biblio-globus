@@ -82,9 +82,15 @@ class UserValuesTableSeeder extends Seeder
                 ],
                 [
                     'id' => 12,
-                    'name' => 'ОЛИМПИЙСКИЙ ПАРК, отель',
+                    'name' => 'DELTA SIRIUS, гостиница 3*',
                     'entity' => 'hotel',
-                    'api_id' => '102610145618'
+                    'api_id' => 102610172080,
+                ],
+                [
+                    'id' => 13,
+                    'name' => 'DELTA SIRIUS, гостиница 3*',
+                    'entity' => 'hotel',
+                    'api_id' => 102610171604,
                 ],
             ]
         );

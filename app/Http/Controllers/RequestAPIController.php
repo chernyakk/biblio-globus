@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\APIRequest;
 use App\ExcelFile;
-use DateTime;
+use App\RequestsAPIFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -42,7 +42,8 @@ class RequestAPIController extends Controller {
         }
 
         $nowDate = date("d.m.Y", strtotime($request['date']));
-        $diffDate = $request['diffDate'];
+        //пока висит, потом уберём
+        $request['days'] = false;
 
         $data = [
             'scheme' => 'http',
@@ -59,21 +60,61 @@ class RequestAPIController extends Controller {
                 'ins' => '0-250000-RUR',
                 'p' => substr($people,0, -1),
                 'xml' => '11',
-                'f7' => $diffDate,
-
+                'f7' => $request['diffDate'],
             ],
             'hotels' => [],
+            'service' => [
+                'date' => strtotime($request['date']),
+                'days' => $request['diffDate'],
+            ]
         ];
 
         foreach($hotels as $hotel){
             array_push($data['hotels'], ['F4' => $hotel->api_id]);
         }
 
-        return $result->APIRequestBuilder($data, Auth::user()->email);
+        switch ($request['days']){
+            case true:
+                $factory = new RequestsAPIFactory($data, Auth::user()->email);
+                return $factory->getRequests();
+                break;
+            default:
+                return $result->APIRequestBuilder($data, Auth::user()->email);
+        }
     }
 
     public static function makeExcel(Request $request) {
         $file = new ExcelFile($request->all(), Auth::id());
         return $file->setValues();
+    }
+
+    public static function getAllDaysPrices($query = null, $email = null) {
+        $data = [
+            'scheme' => 'http',
+            'host' => 'export.bgoperator.ru',
+            'path' => '/partners',
+            'query' => [
+                'action' => 'price',
+                'flt' => '100410000050',
+                'flt2' => '100510000863',
+                'tid' => '211',
+                'id_price' => '-1',
+                'data' => '08.08.2020',
+                'd2' => '08.08.2020',
+                'ins' => '0-250000-RUR',
+                'p' => '0130619840.0130619840',
+                'xml' => '11',
+                'f7' => '7',
+            ],
+            'hotels' => [],
+            'service' => [
+                'date' => strtotime('08.08.2020'),
+                'days' => 7,
+            ],
+        ];
+        $email = 'admin@admin.ru';
+        $trying = new RequestsAPIFactory($data, $email);
+        dd($trying->getRequests());
+
     }
 }
