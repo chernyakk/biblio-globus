@@ -8,11 +8,18 @@
   width: 320px;
   margin-bottom: 20px;
 }
-.whatparse__row--line {
+.whatparse__row--line,
+.whatparse__row--checkbox {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.whatparse__row--checkbox {
   margin-bottom: 30px;
+  align-items: center;
+}
+.whatparse__row--line {
+  justify-content: space-between;
 }
 .whatparse__row--small {
   display: flex;
@@ -22,6 +29,9 @@
 .whatparse__label {
   margin-bottom: 7px;
   font-weight: 500;
+}
+.whatparse__label--checkbox {
+  margin-left: 5px;
 }
 .whatparse__input {
   height: 56px;
@@ -49,9 +59,6 @@
     font-size: 14px;
   }
 }
-.parsed__table {
-  width: 70vw;
-}
 @media (max-width: 690px) {
   .parsed__table {
     overflow-x: auto;
@@ -60,6 +67,8 @@
 .parsed__row,
 .parsed__row:nth-child(even) {
   transition: 0.3s cubic-bezier(0.25, 0.1, 0.22, 0.96);
+  display: grid;
+  grid-template-columns: 5fr 1fr 1fr;
 }
 .parsed__row:hover,
 .parsed__row:nth-child(even):hover {
@@ -67,6 +76,33 @@
 }
 .parsed__row:nth-child(even) {
   background-color: #e3f2fd;
+}
+.parsed__td {
+  padding: 15px;
+  line-height: 150%;
+}
+@media (max-width: 690px) {
+  .parsed__td {
+    padding: 10px;
+  }
+}
+.parsed__td--full {
+  padding: 0 15px;
+}
+@media (max-width: 690px) {
+  .parsed__td--full {
+    padding: 0 10px;
+    grid-column-start: 1;
+    grid-column-end: 4;
+  }
+}
+.parsed__row--small {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.parsed__row--small.--main {
+  margin-bottom: 5px;
 }
 .parsed__topfield {
   display: flex;
@@ -112,23 +148,14 @@
   border-color: #0d47a1;
   box-shadow: 0 3px 7px 0px #e0e0e0;
 }
-.parsed td,
-th {
-  padding: 15px;
-  line-height: 150%;
-}
 @media (max-width: 690px) {
-  .parsed td,
-  th {
-    padding: 10px;
+  .parsed__buttons {
+    width: min-content;
+  }
+  .parsed__buttons .cta.form.grey {
+    margin-bottom: 5px;
   }
 }
-/*.col-6 {*/
-/*  width: 70%;*/
-/*}*/
-/*.col-3 {*/
-/*  width: 15%;*/
-/*}*/
 * {
   font-family: 'Roboto';
 }

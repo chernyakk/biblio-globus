@@ -39,6 +39,10 @@
                                class="whatparse__input input-number" min="0">
                     </div>
                 </div>
+                <div class="whatparse__row--checkbox">
+                    <input type="checkbox" name="days" v-model="days" id="days" >
+                    <label for="days" class="whatparse__label--checkbox">Отобразить цены по дням</label>
+                </div>
                 <button type="submit" class="cta">Запросить цены</button>
             </form>
         </div>
@@ -62,6 +66,7 @@
                 date2: this.$moment().add(8, 'days').format('YYYY-MM-DD'),
                 adults: '1',
                 kids: '0',
+                days: false
             };
         },
         computed: {
@@ -82,6 +87,7 @@
                     api_token: document.cookie.match ( '(^|;) ?' + 'api_token' + '=([^;]*)(;|$)' )[2],
                 })
                 .then(response => {
+                    console.log(response);
                     this.loading = false;
                     this.tours = response.data;
                     if (!response.data.length) {
