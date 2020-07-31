@@ -14,7 +14,7 @@ class ExcelFile
     private $data;
     private $spreadSheet;
 
-    public function __construct($array, $userId)
+    public function __construct($array)
     {
         $this->data = $this->formatArray($array);
         $this->spreadSheet = new Spreadsheet();

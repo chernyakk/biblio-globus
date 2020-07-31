@@ -31,7 +31,7 @@ class RequestsAPIFactory
         unset($queue[0]['service']);
         $queue[0]['type'] = 'summary';
         for ($i = 0; $i < $this->days; $i++) {
-            $date = date("d.m.Y",($this->nowDate + ($i + 1) * 24 * 3600));
+            $date = date("d.m.Y",($this->nowDate + $i * 24 * 3600));
             $queue[$i + 1] = $this->mainQuery;
             $queue[$i + 1]['query']['f7'] = 1;
             $queue[$i + 1]['query']['data'] = $date;

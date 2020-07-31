@@ -15,7 +15,16 @@ class APIRequest
     private $cookie;
     private $client;
     private $userMail;
+    private $checker;
+    private $onDays;
 
+
+    public function __construct($email, bool $onDays = false)
+    {
+        $this->userMail = $email;
+        $this->setClient();
+        $this->onDays = $onDays;
+    }
 
     public function getQuery(): string
     {
@@ -47,10 +56,9 @@ class APIRequest
         $this->cookie = $cookie;
     }
 
-    public function APIRequestBuilder(array $query = [], $mail = 'admin@admin.ru') {
-        if (!isset($this->userId)) $this->userMail = $mail;
-        if (!isset($this->client)) $this->setClient();
-        if (!isset($this->query)) $this->setQuery($query);
+    public function APIRequestBuilder($query, $checker = 'summary') {
+        $this->checker = $checker;
+        $this->setQuery($query);
         if (!isset($this->cookie))  $this->getAuth();
         $options = [
             'headers' => [
@@ -110,26 +118,47 @@ class APIRequest
         } catch (RequestException $e) {
             $this->APIExceptionHandler($e);
         }
-        return $this->APIRequestBuilder();
     }
 
     public function APIResponseHandler($response) {
         $contentType = $response->getHeader('Content-Type')[0];
         if (strripos($contentType, 'json')){
             $returnValues = [];
-            foreach ((json_decode($response->getBody(), true)['entries']) as $entry) {
-                $returnValues[] = array(
-                    'id_hotel' => $entry['id_hotel'],
-                    'room' => $entry['room'],
-                    'quota' => $entry['quota'],
-                    'duration' => $entry['duration'],
-                    'prices' => array(
-                        'total' => $entry['prices'][0]['amount'],
-                        'separate' => [],
-                    )
-                );
+            switch ($this->checker) {
+                case 'summary':
+                    $counter = 0;
+                    foreach ((json_decode($response->getBody(), true)['entries']) as $entry) {
+                        $returnValues[] = array(
+                            'id_hotel' => $entry['id_hotel'],
+                            'room' => $entry['room'],
+                            'quota' => $entry['quota'],
+                            'duration' => $entry['duration'],
+                            'tour_date' => $entry['tour_date'],
+                            'prices' => array(
+                                'total' => $entry['prices'][0]['amount'],
+                            )
+                        );
+                        if ($this->onDays) {
+                            for ($day = 0; $day < $entry['duration']; $day++){
+                                $nowDate = strtotime($entry['tour_date']) + $day * 24 * 3600;
+                                $returnValues[$counter]['prices']['separate'][$nowDate] = null;
+                            }
+                            $counter++;
+                        }
+                    }
+                    unset($counter);
+                    break;
+                case 'separate':
+                    foreach ((json_decode($response->getBody(), true)['entries']) as $entry) {
+                        $returnValues[strtotime($entry['tour_date'])][$entry['id_hotel']][] = array(
+                                'room' => $entry['room'],
+                                'price' => $entry['prices'][0]['amount'],
+                        );
+                    }
+                    break;
             }
             return $returnValues;
+
         }
         else {
             return $response->getHeaders();
