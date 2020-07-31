@@ -48,7 +48,7 @@
         </div>
 
         <div v-if="responded">
-            <hotels-prices :tours="tours" />
+            <hotels-prices :tours="tours" :days="days" />
         </div>
     </div>
 </template>
@@ -62,8 +62,8 @@
                 tours: null,
                 error: null,
                 percent: 10,
-                date1: this.$moment().add(1, 'days').format('YYYY-MM-DD'),
-                date2: this.$moment().add(8, 'days').format('YYYY-MM-DD'),
+                date1: this.$moment().add(8, 'days').format('YYYY-MM-DD'),
+                date2: this.$moment().add(15, 'days').format('YYYY-MM-DD'),
                 adults: '1',
                 kids: '0',
                 days: false
@@ -84,10 +84,10 @@
                     diffDate: this.diffDate,
                     adults: this.adults,
                     kids: this.kids,
+                    days: this.days,
                     api_token: document.cookie.match ( '(^|;) ?' + 'api_token' + '=([^;]*)(;|$)' )[2],
                 })
                 .then(response => {
-                    console.log(response);
                     this.loading = false;
                     this.tours = response.data;
                     if (!response.data.length) {
@@ -103,3 +103,4 @@
         },
     }
 </script>
+
