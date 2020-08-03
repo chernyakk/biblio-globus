@@ -1973,6 +1973,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1987,8 +1988,14 @@ __webpack_require__.r(__webpack_exports__);
         102610172080: 'DELTA SIRIUS, гостиница 3*',
         102610171604: 'DELTA SIRIUS, гостиница 3*'
       },
-      isShow: false
+      isShow: false,
+      showing: {}
     };
+  },
+  created: function created() {
+    for (var data_id in this.tours) {
+      Vue.set(this.showing, data_id, false);
+    }
   },
   props: ['tours', 'days'],
   methods: {
@@ -2005,6 +2012,9 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         window.open(response.data);
       });
+    },
+    showList: function showList(id) {
+      this.showing[id] = !this.showing[id];
     }
   }
 });
@@ -58934,58 +58944,125 @@ var render = function() {
             var duration = ref.duration
             return _c(
               "div",
-              { staticClass: "parsed__row --sub", attrs: { "data-id": id } },
+              {
+                staticClass: "parsed__row --sub",
+                class: { parsed__onclick: _vm.days }
+              },
               [
-                _c("div", { staticClass: "parsed__td" }, [
-                  _c("strong", [_vm._v("Отель:")]),
-                  _vm._v(" " + _vm._s(_vm.hotelNames[id_hotel])),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("strong", [_vm._v("Тип:")]),
-                  _vm._v(" " + _vm._s(room)),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("strong", [_vm._v("Свободных мест:")]),
-                  _vm._v(" " + _vm._s(quota)),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("strong", [_vm._v("Количество ночей:")]),
-                  _vm._v(" " + _vm._s(duration) + "\n                    ")
-                ]),
+                _c(
+                  "div",
+                  {
+                    staticClass: "parsed__td",
+                    on: {
+                      click: function($event) {
+                        return _vm.showList(id)
+                      }
+                    }
+                  },
+                  [
+                    _c("strong", [_vm._v("Отель:")]),
+                    _vm._v(" " + _vm._s(_vm.hotelNames[id_hotel])),
+                    _c("br"),
+                    _vm._v(" "),
+                    _c("strong", [_vm._v("Тип:")]),
+                    _vm._v(" " + _vm._s(room)),
+                    _c("br"),
+                    _vm._v(" "),
+                    _c("strong", [_vm._v("Свободных мест:")]),
+                    _vm._v(" " + _vm._s(quota)),
+                    _c("br"),
+                    _vm._v(" "),
+                    _c("strong", [_vm._v("Количество ночей:")]),
+                    _vm._v(" " + _vm._s(duration) + "\n                ")
+                  ]
+                ),
                 _vm._v(" "),
-                _c("div", { staticClass: "parsed__td" }, [
-                  _vm._v(_vm._s(prices.total))
-                ]),
+                _c(
+                  "div",
+                  {
+                    staticClass: "parsed__td",
+                    on: {
+                      click: function($event) {
+                        return _vm.showList(id)
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(prices.total))]
+                ),
                 _vm._v(" "),
-                _c("div", { staticClass: "parsed__td" }, [
-                  _vm._v(_vm._s(_vm.overprice(prices.total)))
-                ]),
+                _c(
+                  "div",
+                  {
+                    staticClass: "parsed__td",
+                    on: {
+                      click: function($event) {
+                        return _vm.showList(id)
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm.overprice(prices.total)))]
+                ),
                 _vm._v(" "),
-                _vm.days
-                  ? _c(
-                      "ul",
-                      { staticClass: "parsed__td--full" },
-                      [
-                        _vm._m(1, true),
-                        _vm._v(" "),
-                        _vm._l(prices.separate, function(price, date) {
-                          return _c(
-                            "li",
-                            { staticClass: "parsed__row--small" },
-                            [
-                              _c("div", [_vm._v(_vm._s(date))]),
-                              _vm._v(" "),
-                              _c("div", [_vm._v(_vm._s(price))]),
-                              _vm._v(" "),
-                              _c("div", [_vm._v(_vm._s(_vm.overprice(price)))])
-                            ]
-                          )
-                        })
-                      ],
-                      2
-                    )
-                  : _vm._e()
-              ]
+                _c("transition", { attrs: { name: "slide" } }, [
+                  _vm.showing[id]
+                    ? _c("div", [
+                        _vm.days
+                          ? _c(
+                              "ul",
+                              { staticClass: "parsed__td--full" },
+                              [
+                                _c(
+                                  "li",
+                                  { staticClass: "parsed__row--small --main" },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "parsed__td--small" },
+                                      [_c("strong", [_vm._v("Число")])]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "parsed__td--small" },
+                                      [_c("strong", [_vm._v("Цена стандарт")])]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "parsed__td--small" },
+                                      [
+                                        _c("strong", [
+                                          _vm._v("Цена с наценкой")
+                                        ])
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _vm._l(prices.separate, function(price, date) {
+                                  return _c(
+                                    "li",
+                                    { staticClass: "parsed__row--small" },
+                                    [
+                                      _c("div", [_vm._v(_vm._s(date))]),
+                                      _vm._v(" "),
+                                      _c("div", [_vm._v(_vm._s(price))]),
+                                      _vm._v(" "),
+                                      _c("div", [
+                                        _vm._v(_vm._s(_vm.overprice(price)))
+                                      ])
+                                    ]
+                                  )
+                                })
+                              ],
+                              2
+                            )
+                          : _vm._e()
+                      ])
+                    : _vm._e()
+                ])
+              ],
+              1
             )
           })
         ],
@@ -59009,24 +59086,6 @@ var staticRenderFns = [
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "parsed__td" }, [
-        _c("strong", [_vm._v("Цена с наценкой")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "parsed__row--small --main" }, [
-      _c("div", { staticClass: "parsed__td--small" }, [
-        _c("strong", [_vm._v("Число")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "parsed__td--small" }, [
-        _c("strong", [_vm._v("Цена стандарт")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "parsed__td--small" }, [
         _c("strong", [_vm._v("Цена с наценкой")])
       ])
     ])

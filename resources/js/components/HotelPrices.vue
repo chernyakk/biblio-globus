@@ -23,18 +23,19 @@
                         <strong>Цена с наценкой</strong>
                     </div>
                 </div>
-                <div class="parsed__row --sub" v-for="({ id_hotel, room, prices, quota, duration }, id) in tours" :data-id="id" >
-<!--                    <div @click="isShow = !isShow"></div>-->
-                    <div class="parsed__td">
+                <div class="parsed__row --sub" v-for="({ id_hotel, room, prices, quota, duration }, id) in tours"
+                     v-bind:class="{ parsed__onclick : days }">
+                    <div class="parsed__td" v-on:click="showList(id)">
                         <strong>Отель:</strong> {{ hotelNames[id_hotel] }}<br>
                         <strong>Тип:</strong> {{ room }}<br>
                         <strong>Свободных мест:</strong> {{quota}}<br>
                         <strong>Количество ночей:</strong> {{duration}}
                     </div>
-                    <div class="parsed__td">{{prices.total}}</div>
-                    <div class="parsed__td">{{overprice(prices.total)}}</div>
-<!--                    <transition name="slide">-->
-<!--                        <div v-if="isShow" :data-toggle-id="id">-->
+                    <div class="parsed__td" v-on:click="showList(id)">{{prices.total}}</div>
+                    <div class="parsed__td" v-on:click="showList(id)">{{overprice(prices.total)}}</div>
+
+                    <transition name="slide">
+                        <div v-if="showing[id]">
                             <ul class="parsed__td--full" v-if="days">
                                 <li class="parsed__row--small --main">
                                     <div class="parsed__td--small">
@@ -53,8 +54,8 @@
                                     <div>{{ overprice(price) }}</div>
                                 </li>
                             </ul>
-<!--                        </div>-->
-<!--                    </transition>-->
+                        </div>
+                    </transition>
                 </div>
             </div>
         </div>
@@ -77,7 +78,13 @@
                     102610171604 : 'DELTA SIRIUS, гостиница 3*',
                 },
                 isShow: false,
+                showing: {}
             };
+        },
+        created: function () {
+            for (let data_id in this.tours) {
+                Vue.set(this.showing, data_id, false)
+            }
         },
         props: ['tours', 'days'],
         methods: {
@@ -96,42 +103,10 @@
                     .then(response => {
                         window.open(response.data)
                     })
+            },
+            showList: function(id) {
+                this.showing[id] = !this.showing[id];
             }
         }
     }
 </script>
-
-<!--<style>-->
-
-<!--.slide-enter-active {-->
-<!--    -moz-transition-duration: 0.3s;-->
-<!--    -webkit-transition-duration: 0.3s;-->
-<!--    -o-transition-duration: 0.3s;-->
-<!--    transition-duration: 0.3s;-->
-<!--    -moz-transition-timing-function: ease-in;-->
-<!--    -webkit-transition-timing-function: ease-in;-->
-<!--    -o-transition-timing-function: ease-in;-->
-<!--    transition-timing-function: ease-in;-->
-<!--}-->
-
-<!--.slide-leave-active {-->
-<!--    -moz-transition-duration: 0.3s;-->
-<!--    -webkit-transition-duration: 0.3s;-->
-<!--    -o-transition-duration: 0.3s;-->
-<!--    transition-duration: 0.3s;-->
-<!--    -moz-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);-->
-<!--    -webkit-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);-->
-<!--    -o-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);-->
-<!--    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);-->
-<!--}-->
-
-<!--.slide-enter-to, .slide-leave {-->
-<!--    max-height: 200px;-->
-<!--    overflow: hidden;-->
-<!--}-->
-
-<!--.slide-enter, .slide-leave-to {-->
-<!--    overflow: hidden;-->
-<!--    max-height: 0;-->
-<!--}-->
-<!--</style>-->
