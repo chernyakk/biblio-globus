@@ -41,9 +41,4 @@ class RequestsAPIFactory
         }
         $this->requests = $queue;
     }
-
-    private function send()
-    {
-        return true;
-    }
 }

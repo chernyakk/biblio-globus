@@ -4,7 +4,8 @@
             <div class="parsed__topfield">
                 <div class="parsed__percent">
                     <label for="percent" class="parsed__label">% наценки</label>
-                    <input v-model="percent" type="number" id="percent" class="parsed__input input-number" min="0">
+                    <input v-model="percent" type="number" id="percent" class="parsed__input input-number"
+                           min="0" :style="{ width: percentLength }">
                 </div>
                 <div class="parsed__buttons">
                     <button class="cta form grey" onclick="location.reload()"> Вернуться </button>
@@ -23,10 +24,10 @@
                         <strong>Цена с наценкой</strong>
                     </div>
                 </div>
-                <div class="parsed__row --sub" v-for="({ id_hotel, room, prices, quota, duration }, id) in tours"
+                <div class="parsed__row --sub" v-for="({ hotel, room, prices, quota, duration }, id) in tours"
                      v-bind:class="{ parsed__onclick : days }">
-                    <div class="parsed__td" v-on:click="showList(id)">
-                        <strong>Отель:</strong> {{ hotelNames[id_hotel] }}<br>
+                    <div class="parsed__td" v-on:click.prevent="showList(id)">
+                        <strong>Отель:</strong> {{ hotel }}<br>
                         <strong>Тип:</strong> {{ room }}<br>
                         <strong>Свободных мест:</strong> {{quota}}<br>
                         <strong>Количество ночей:</strong> {{duration}}
@@ -69,14 +70,6 @@
             return {
                 percent: 50,
                 hotelsToAPI: null,
-                hotelNames: {
-                    102616630651 : 'ГОРКИ ГОРОД, апарт-отель',
-                    102610026739 : 'SIGMA SIRIUS, пансионат (бывш. кв. Александровский сад)',
-                    102610026611 : 'GAMMA SIRIUS (бывш. кв. Чистые Пруды)',
-                    102610084348 : 'ОК СОЧИ ПАРК ОТЕЛЬ',
-                    102610172080 : 'DELTA SIRIUS, гостиница 3*',
-                    102610171604 : 'DELTA SIRIUS, гостиница 3*',
-                },
                 isShow: false,
                 showing: {}
             };
@@ -87,9 +80,16 @@
             }
         },
         props: ['tours', 'days'],
+        computed: {
+            percentLength: function() {
+                const min = 52;
+                let now = String(this.percent).length < 2 ? 2 : String(this.percent).length;
+                return Number(min + ((now - 2) * 10)) + 'px';
+            }
+        },
         methods: {
             overprice: function(price) {
-                return (Number(price) * (1 + '.' + this.percent)).toFixed(0)
+                return (Number(price) * (1 + (this.percent) / 100)).toFixed(0)
             },
             giveFile: function (hotels, percent) {
                 this.hotelsToAPI = hotels;

@@ -1974,20 +1974,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       percent: 50,
       hotelsToAPI: null,
-      hotelNames: {
-        102616630651: 'ГОРКИ ГОРОД, апарт-отель',
-        102610026739: 'SIGMA SIRIUS, пансионат (бывш. кв. Александровский сад)',
-        102610026611: 'GAMMA SIRIUS (бывш. кв. Чистые Пруды)',
-        102610084348: 'ОК СОЧИ ПАРК ОТЕЛЬ',
-        102610172080: 'DELTA SIRIUS, гостиница 3*',
-        102610171604: 'DELTA SIRIUS, гостиница 3*'
-      },
       isShow: false,
       showing: {}
     };
@@ -1998,9 +1991,16 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   props: ['tours', 'days'],
+  computed: {
+    percentLength: function percentLength() {
+      var min = 52;
+      var now = String(this.percent).length < 2 ? 2 : String(this.percent).length;
+      return Number(min + (now - 2) * 10) + 'px';
+    }
+  },
   methods: {
     overprice: function overprice(price) {
-      return (Number(price) * (1 + '.' + this.percent)).toFixed(0);
+      return (Number(price) * (1 + this.percent / 100)).toFixed(0);
     },
     giveFile: function giveFile(hotels, percent) {
       this.hotelsToAPI = hotels;
@@ -58892,6 +58892,7 @@ var render = function() {
               }
             ],
             staticClass: "parsed__input input-number",
+            style: { width: _vm.percentLength },
             attrs: { type: "number", id: "percent", min: "0" },
             domProps: { value: _vm.percent },
             on: {
@@ -58937,7 +58938,7 @@ var render = function() {
           _vm._m(0),
           _vm._v(" "),
           _vm._l(_vm.tours, function(ref, id) {
-            var id_hotel = ref.id_hotel
+            var hotel = ref.hotel
             var room = ref.room
             var prices = ref.prices
             var quota = ref.quota
@@ -58955,13 +58956,14 @@ var render = function() {
                     staticClass: "parsed__td",
                     on: {
                       click: function($event) {
+                        $event.preventDefault()
                         return _vm.showList(id)
                       }
                     }
                   },
                   [
                     _c("strong", [_vm._v("Отель:")]),
-                    _vm._v(" " + _vm._s(_vm.hotelNames[id_hotel])),
+                    _vm._v(" " + _vm._s(hotel)),
                     _c("br"),
                     _vm._v(" "),
                     _c("strong", [_vm._v("Тип:")]),

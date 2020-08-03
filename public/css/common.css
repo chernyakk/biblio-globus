@@ -89,6 +89,7 @@
 }
 .parsed__td--full {
   padding: 0 15px;
+    cursor: auto;
 }
 @media (max-width: 690px) {
   .parsed__td--full {

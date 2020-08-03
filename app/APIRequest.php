@@ -17,6 +17,7 @@ class APIRequest
     private $userMail;
     private $checker;
     private $onDays;
+    private $hotels;
 
 
     public function __construct($email, bool $onDays = false)
@@ -24,19 +25,23 @@ class APIRequest
         $this->userMail = $email;
         $this->setClient();
         $this->onDays = $onDays;
+        $this->hotels = DB::table('user_values')
+            ->select('name', 'api_id')
+            ->where('entity', '=', 'hotel')
+            ->get();
     }
 
-    public function getQuery(): string
+    private function getQuery(): string
     {
         return $this->query;
     }
 
-    public function getCookie(): CookieJar
+    private function getCookie(): CookieJar
     {
         return $this->cookie;
     }
 
-    public function setQuery (array $data) : void
+    private function setQuery (array $data) : void
     {
         $url = $data['scheme'] . "://" . $data['host'] . $data['path'] . "?";
         $url .= is_string($data['query']) ? $data['query'] : http_build_query($data['query']);
@@ -46,12 +51,12 @@ class APIRequest
         $this->query = $url;
     }
 
-    public function setClient() : void
+    private function setClient() : void
     {
         $this->client = new Client(['cookies' => true]);
     }
 
-    public function setCookie(CookieJar $cookie) : void
+    private function setCookie(CookieJar $cookie) : void
     {
         $this->cookie = $cookie;
     }
@@ -71,7 +76,7 @@ class APIRequest
         return $this->APIRequestSender($request, $options);
     }
 
-    public function APIRequestSender(Request $request, array $options) {
+    private function APIRequestSender(Request $request, array $options) {
         try {
             $response = $this->client->send($request, $options);
         } catch (RequestException $e) {
@@ -80,7 +85,7 @@ class APIRequest
         return $this->APIResponseHandler($response);
     }
 
-    public function APIExceptionHandler($code) {
+    private function APIExceptionHandler($code) {
         $status = $code->getResponse()->getStatusCode();
         switch ($status) {
             case 401:
@@ -97,7 +102,7 @@ class APIRequest
         }
     }
 
-    public function getAuth() {
+    private function getAuth() {
         $authData = DB::table('api_auth')
             ->where('email', '=', $this->userMail)
             ->select('username', 'password')
@@ -120,7 +125,7 @@ class APIRequest
         }
     }
 
-    public function APIResponseHandler($response) {
+    private function APIResponseHandler($response) {
         $contentType = $response->getHeader('Content-Type')[0];
         if (strripos($contentType, 'json')){
             $returnValues = [];
@@ -130,6 +135,8 @@ class APIRequest
                     foreach ((json_decode($response->getBody(), true)['entries']) as $entry) {
                         $returnValues[] = array(
                             'id_hotel' => $entry['id_hotel'],
+                            'hotel' => $this->hotels
+                                ->where('api_id', '=', $entry['id_hotel'])->first()->name,
                             'room' => $entry['room'],
                             'quota' => $entry['quota'],
                             'duration' => $entry['duration'],

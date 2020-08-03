@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\{Alignment, Border};
@@ -57,16 +56,11 @@ class ExcelFile
         $returnArray = [];
         $percent = $array['percent'];
         $array = $array['hotels'];
-        $hotelNames = DB::table('user_values')
-            ->select('name', 'api_id')
-            ->where('entity', '=', 'hotel')
-            ->get();
         for ($i = 0; $i < count($array); $i++){
             $element = $array[$i];
             array_push($returnArray, [
                 '№' => $i + 1,
-                'Отель' => $hotelNames
-                    ->where('api_id', '=', $element['id_hotel'])->first()->name,
+                'Отель' => $element['hotel'],
                 'Номер' => $element['room'],
                 'Количество ночей' => $element['duration'],
                 'Цена' => $element['prices']['total'],
