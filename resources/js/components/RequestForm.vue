@@ -16,7 +16,7 @@
         </div>
 
         <div v-if="!responded && !loading">
-            <form action="" class="whatparse" @submit="fetchData">
+            <form action="" class="whatparse" v-on:submit.prevent="fetchData">
                 <div class="whatparse__row">
                     <label for="checkin" class="whatparse__label">Заезд</label>
                     <input type="date" name="date1" v-model="date1" id="checkin"
@@ -76,6 +76,7 @@
         },
         methods: {
             fetchData() {
+
                 this.loading = true;
                 this.error = null;
                 axios

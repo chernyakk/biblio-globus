@@ -59156,7 +59156,12 @@ var render = function() {
             {
               staticClass: "whatparse",
               attrs: { action: "" },
-              on: { submit: _vm.fetchData }
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.fetchData($event)
+                }
+              }
             },
             [
               _c("div", { staticClass: "whatparse__row" }, [
